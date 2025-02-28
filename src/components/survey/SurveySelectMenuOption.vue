@@ -1,5 +1,5 @@
 <template>
-  <option value="{{value}}"><slot/></option>
+  <option :value="value"><slot/></option>
 </template>
 <script>
 export default {

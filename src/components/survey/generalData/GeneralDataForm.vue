@@ -2,10 +2,10 @@
   <div>
     <div class="form-container">
       <form class="form">
-        <SurveyFormGroup :options="optionsGender" labelText="Pol" name="pol" v-model="formData.gender"/>
-        <SurveyFormGroup :options="optionsStatus" labelText="Status" name="status" v-model="formData.status"/>
-        <SurveyFormGroup :options="optionsAvgGrade" labelText="Prosecna ocena" name="avgGrade" v-model="formData.avg_grade"/>
-        <SurveyFormGroup :options="optionsAttendance" labelText="Prisustvo na nastavi" name="attendance" v-model="formData.class_attendance"/>
+        <SurveyFormGroup :options="optionsGender" labelText="Pol" name="pol"/>
+        <SurveyFormGroup :options="optionsStatus" labelText="Status" name="status"/>
+        <SurveyFormGroup :options="optionsAvgGrade" labelText="Prosecna ocena" name="avgGrade"/>
+        <SurveyFormGroup :options="optionsAttendance" labelText="Prisustvo na nastavi" name="attendance"/>
         <FormButton value="Potvrdi" type="submit" @click="submitData" route="/study-program-eval"/>
       </form>
   </div>
@@ -26,48 +26,78 @@ export default {
   data() {
     return {
       optionsGender: [
-        {text: "Muski", value:"M"},
-        {text: "Zenski", value:"Z"},
+        {id: "gender",text: "Muski", value:"M"},
+        {id: "gender", text: "Zenski", value:"Z"},
       ],
       optionsStatus: [
-        {text: "Budzet", value:"B"},
-        {text: "Samofinansiranje", value:"S"},
+        {id: "status", text: "Budzet", value:"B"},
+        {id: "status", text: "Samofinansiranje", value:"S"},
       ],
       optionsAvgGrade: [
-        {text: "6-7", value:"6-7"},
-        {text: "7-8", value:"7-8"},
-        {text: "8-9", value:"8-9"},
-        {text: "9-10", value:"9-10"},
+        {id: "avgGrade", text: "6-7", value:"6-7"},
+        {id: "avgGrade", text: "7-8", value:"7-8"},
+        {id: "avgGrade", text: "8-9", value:"8-9"},
+        {id: "avgGrade", text: "9-10", value:"9-10"},
       ],
       optionsAttendance: [
-        {text: "Retko", value:"retko"},
-        {text: "Povremeno", value:"povremeno"},
-        {text: "Cesto", value:"cesto"},
-        {text: "Redovno", value:"redovno"},
+        {id: "classAttendance", text: "Retko", value:"retko"},
+        {id: "classAttendance", text: "Povremeno", value:"povremeno"},
+        {id: "classAttendance", text: "Cesto", value:"cesto"},
+        {id: "classAttendance", text: "Redovno", value:"redovno"},
       ],
-      formData: {
-        gender: "",
-        status: "",
-        avg_grade: "",
-        class_attendance: "",
-        study_program_by_year_id: sessionStorage.getItem("spyid"),
-      }
+      // formData: {
+      //   gender: "",
+      //   status: "",
+      //   avg_grade: "",
+      //   class_attendance: "",
+      //   study_program_by_year_id: sessionStorage.getItem("spyid"),
+      // }
+    }
+  },
+  computed: {
+    formDataGender() {
+      return this.$store.state.generalDataGender;
+    },
+    formDataStatus() {
+      return this.$store.state.generalDataStatus;
+    },
+    formDataAvgGrade() {
+      return this.$store.state.generalDataAvgGrade;
+    },
+    formDataClassAttendance() {
+      return this.$store.state.generalDataClassAttendance;
+    },
+    formData() {
+      return this.$store.state.generalData;
     }
   },
   methods: {
     submitData(e){
       e.preventDefault();
+
+      this.$store.commit("setGeneralData", {
+        gender: this.formDataGender,
+        status: this.formDataStatus,
+        avg_grade: this.formDataAvgGrade,
+        class_attendance: this.formDataClassAttendance,
+        study_program_by_year_id: sessionStorage.getItem("spyid"),
+      });
+
       console.log("Sending survey data:", this.formData);
 
-      // fetch("http://127.0.0.1:8000/api/general-data", {
-      //   method: "POST",
-      //   body: JSON.stringify(this.formData),
-      //   headers: {
-      //     "Content-Type": "application/json",
-      //     "mode": "no-cors",
-      //     "Access-Control-Allow-Origin": "*",
-      //   }
-      // })
+      fetch("http://127.0.0.1:8000/api/general-data", {
+        method: "POST",
+        body: JSON.stringify(this.formData),
+        headers: {
+          "Content-Type": "application/json",
+          "mode": "no-cors",
+          "Access-Control-Allow-Origin": "*",
+        }
+      })
+        .then(res => res.json())
+        .then(data => {
+          console.log(data);
+        })
     }
   }
 };

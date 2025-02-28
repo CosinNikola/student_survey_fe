@@ -5,7 +5,7 @@
         <SurveyFormGroup :options="options" labelText="Plan rada nudi neophodne informacije" name="plan_informing"/>
         <SurveyFormGroup :options="options" labelText="Ocena rasporeda nastave" name="teaching_schedule"/>
         <SurveyFormGroup :options="options" labelText="Ocena rasporeda konsultacija" name="consultation_schedule"/>
-        <FormButton value="Potvrdi" route="/subject-grade"/>
+        <FormButton value="Potvrdi" route="/subject-grade" @click="submitData"/>
       </form>
     </div>
   </div>
@@ -21,14 +21,31 @@ export default {
     SurveyFormGroup,
     FormButton,
   },
+  computed: {
+    formData() {
+      return {
+          plan_informing: this.$store.state.surveyData[0],
+          teaching_schedule: this.$store.state.surveyData[1],
+          consultation_schedule: this.$store.state.surveyData[2],
+          study_program_by_year_id: sessionStorage.getItem("spyid"),
+      }
+    }
+  },
+  methods: {
+    submitData(e) {
+      e.preventDefault();
+      console.log("Work plan grades:", this.formData);
+      this.$store.commit("resetSurveyData");
+    }
+  },
   data() {
     return {
       options: [
-        { text: "1", value: 1 },
-        { text: "2", value: 2 },
-        { text: "3", value: 3 },
-        { text: "4", value: 4 },
-        { text: "5", value: 5 },
+        { id: 0, text: "1", value: 1 },
+        { id: 1, text: "2", value: 2 },
+        { id: 2, text: "3", value: 3 },
+        { id: 3, text: "4", value: 4 },
+        { id: 4, text: "5", value: 5 },
       ]
     }
   }

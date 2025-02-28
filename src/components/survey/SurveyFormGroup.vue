@@ -19,7 +19,7 @@ export default {
   },
   methods: {
     handleSelectedData(data) {
-      this.selectedData = data;
+      this.$emit("selectedData", data);
     }
   }
 };

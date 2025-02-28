@@ -1,7 +1,7 @@
 <template>
-  <select name="" id="" class="form-group__select">
+  <select v-model="selectValue" @change="handleSelectedValue(options[0].id)" name="" id="" class="form-group__select" >
       <option disabled selected>--</option>
-      <SurveySelectMenuOption @change="sendSelectedValue" v-bind:key="option.text" v-for="option in options" :value="option.value" v-model="this.selectValue">
+      <SurveySelectMenuOption :key="option.id" v-for="option in options" :value="option.value">
         {{option.text}}
       </SurveySelectMenuOption>
   </select>
@@ -19,9 +19,29 @@ export default {
       selectValue: ""
     }
   },
+  computed: {
+    surveyData() {
+      let surveyData = this.$store.state.surveyData;
+      surveyData.push(this.selectValue);
+      return surveyData;
+    }
+  },
   methods: {
-    sendSelectedValue() {
-      this.$emit("selectedData", this.selectValue);
+    handleSelectedValue(key) {
+      // console.log(this.selectValue);
+      if(key === "gender") {
+        this.$store.commit('setGeneralDataGender', this.selectValue);
+      }
+      else if(key === "status") {
+        this.$store.commit('setGeneralDataStatus', this.selectValue);
+      } else if(key === "avgGrade") {
+        this.$store.commit('setGeneralDataAvgGrade', this.selectValue);
+      } else if(key === "classAttendance") {
+        this.$store.commit('setGeneralDataClassAttendance', this.selectValue);
+      }
+      else {
+        console.log(this.surveyData);
+      }
     }
   }
 };
