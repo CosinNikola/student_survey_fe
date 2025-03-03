@@ -1,7 +1,8 @@
 <template>
   <div class="form-group">
+    {{id}}
     <label for="" class="form-group__label">{{labelText}}</label>
-    <SurveySelectMenu @selectedData="handleSelectedData" :options="options" :name="name"></SurveySelectMenu>
+    <SurveySelectMenu @selectedData="handleSelectedData" :options="options" :name="name" :id="id" :prevData="prevData"></SurveySelectMenu>
   </div>
 </template>
 
@@ -11,7 +12,7 @@ import SurveySelectMenu from "@/components/survey/SurveySelectMenu.vue";
 export default {
   name: "SurveyFormGroup",
   components: { SurveySelectMenu },
-  props: ["labelText", "options", "name"],
+  props: ["labelText", "options", "name", "id", "prevData"],
   data() {
     return {
       selectedData: ""

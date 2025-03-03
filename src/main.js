@@ -20,6 +20,8 @@ const store = createStore({
       generalSpyid: 0,
 
       surveyData: [],
+      previousSurveyData: [],
+      previousSurveyName: "",
 
       studyProgramEval: {
         structure: 0,
@@ -51,6 +53,13 @@ const store = createStore({
 
     setStudyProgramEval(state, studyProgramEval) {
       state.studyProgramEval = studyProgramEval;
+    },
+
+    saveSurveyData(state, payload) {
+      state.previousSurveyData = payload;
+    },
+    saveSurveyName(state, payload) {
+      state.previousSurveyName = payload;
     },
 
     resetSurveyData(state) {

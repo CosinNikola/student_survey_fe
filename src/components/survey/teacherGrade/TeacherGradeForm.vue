@@ -2,14 +2,16 @@
   <div>
     <div class="form-container">
       <form class="form">
-        <SurveyFormGroup :options="options" labelText="Jasno i razumljivo izlaganje" name="clarity_of_presentation"/>
-        <SurveyFormGroup :options="options" labelText="Kvalitet primera" name="examples_quality"/>
-        <SurveyFormGroup :options="options" labelText="Nastavnik odgovara na mejlove" name="teacher_answers_email"/>
-        <SurveyFormGroup :options="options" labelText="Korektan odnos" name="correct_relationship"/>
-        <SurveyFormGroup :options="options" labelText="Nivo objektivnosti pri ocenjivanju" name="objectivity"/>
-        <SurveyFormGroup :options="options" labelText="Nastavnik objavljuje rezultate predispitnih aktivnosti" name="result_publication"/>
-        <SurveyFormGroup :options="options" labelText="Nivo javnosti ispita" name="exam_public"/>
-        <FormButton value="Potvrdi" route="/textbooks-grade"/>
+        <SurveyFormGroup
+          :options="options"
+          v-for="formGroupData in formGroupsData"
+          :key="formGroupData.id"
+          :id="formGroupData.id"
+          :labelText="formGroupData.labelText"
+          :name="formGroupData.name"
+        />
+
+        <FormButton value="Potvrdi" :route="route" @click="submitData"/>
       </form>
     </div>
   </div>
@@ -25,14 +27,79 @@ export default {
     SurveyFormGroup,
     FormButton,
   },
+  props: ["type"],
+  computed: {
+    formDataQuality() {
+      return {
+        clarity_of_presentation: this.$store.state.surveyData[0],
+        examples_quality: this.$store.state.surveyData[1],
+        teacher_answers_email: this.$store.state.surveyData[2],
+        correct_relationship: this.$store.state.surveyData[3],
+        subject_study_program_id: sessionStorage.getItem("sspid"),
+      }
+    },
+    formDataAssessment() {
+      return {
+        objectivity: this.$store.state.surveyData[4],
+        results_publication: this.$store.state.surveyData[5],
+        exam_public: this.$store.state.surveyData[6],
+        subject_study_program_id: sessionStorage.getItem("sspid"),
+      }
+    }
+  },
+  methods: {
+    submitData(e) {
+      e.preventDefault();
+      console.log("Teacher quality grades:", this.formDataQuality);
+      console.log("Teacher assessment grades: ", this.formDataAssessment);
+      fetch("http://127.0.0.1:8000/api/teacher-quality", {
+        method: "POST",
+        body: JSON.stringify(this.formDataQuality),
+        headers: {
+          "Content-Type": "application/json",
+          "mode": "no-cors",
+          "Access-Control-Allow-Origin": "*",
+        }
+      })
+        .then(res => res.json())
+        .then(data => {
+          console.log(data);
+
+          fetch("http://127.0.0.1:8000/api/teacher-assessment", {
+            method: "POST",
+            body: JSON.stringify(this.formDataAssessment),
+            headers: {
+              "Content-Type": "application/json",
+              "mode": "no-cors",
+              "Access-Control-Allow-Origin": "*",
+            }
+          })
+            .then(res => res.json())
+            .then(data => {
+              console.log(data);
+             this.$store.commit("resetSurveyData");
+            })
+        })
+    }
+  },
   data() {
     return {
       options: [
-        { text: "1", value: 1 },
-        { text: "2", value: 2 },
-        { text: "3", value: 3 },
-        { text: "4", value: 4 },
-        { text: "5", value: 5 },
+        { id: 0, text: "1", value: 1 },
+        { id: 1,text: "2", value: 2 },
+        { id: 2,text: "3", value: 3 },
+        { id: 3,text: "4", value: 4 },
+        { id: 4,text: "5", value: 5 },
+      ],
+      route: (this.type === "teacher") ? "/associate-grade" : "/textbooks-grade",
+      formGroupsData: [
+        {id: 0, labelText: "Jasno i razumljivo izlaganje", name: "clarity_of_presentation"},
+        {id: 1, labelText: "Kvalitet primera", name: "examples_quality"},
+        {id: 2, labelText: "Nastavnik odgovara na mejlove", name: "teacher_answers_email"},
+        {id: 3, labelText: "Korektan odnos", name: "correct_relationship"},
+        {id: 4, labelText: "Nivo objektivnosti pri ocenjivanju", name: "objectivity"},
+        {id: 5, labelText: "Nastavnik objavljuje rezultate predispitnih aktivnosti", name: "results_publication"},
+        {id: 6, labelText: "Nivo javnosti ispita", name: "exam_public"},
       ]
     }
   }

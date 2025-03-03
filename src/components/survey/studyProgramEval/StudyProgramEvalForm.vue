@@ -1,10 +1,18 @@
 <template>
   <div>
     <div class="form-container">
+      {{currentRoute}}
       <form class="form">
-        <SurveyFormGroup :options="options" labelText="Struktura studijskog programa" name="structure"/>
-        <SurveyFormGroup :options="options" labelText="Znanja koja nudi" name="knowledgeOffering"/>
-        <SurveyFormGroup :options="options" labelText="Ispunjenje ocekivanja" name="meetsExpectations"/>
+        <SurveyFormGroup
+          :options="options"
+          v-for="formGroupData in formGroupsData"
+          :key="formGroupData.id"
+          :id="formGroupData.id"
+          :labelText="formGroupData.labelText"
+          :name="formGroupData.name"
+          :prevData="previousFormData"
+        />
+
         <FormButton value="Potvrdi" route="/work-plan-realization" @click="submitData"/>
       </form>
     </div>
@@ -29,14 +37,32 @@ export default {
         meets_expectations: this.$store.state.surveyData[2],
         study_program_by_year_id: sessionStorage.getItem("spyid"),
       };
-
+    },
+    currentRoute() {
+     return this.$route.path.substring(1);
     }
+
   },
   methods: {
     submitData(e) {
       e.preventDefault();
       console.log("Study program eval:", this.formData);
-      this.$store.commit("resetSurveyData");
+      // fetch("http://127.0.0.1:8000/api/study-program-eval", {
+      //   method: "POST",
+      //   body: JSON.stringify(this.formData),
+      //   headers: {
+      //     "Content-Type": "application/json",
+      //     "mode": "no-cors",
+      //     "Access-Control-Allow-Origin": "*",
+      //   }
+      // })
+      //   .then(res => res.json())
+      //   .then(data => {
+      //     console.log(data);
+      //   })
+          this.$store.commit("saveSurveyData", this.formData);
+          this.$store.commit("saveSurveyName", "study-program-eval");
+          this.$store.commit("resetSurveyData");
     }
   },
   data() {
@@ -47,7 +73,23 @@ export default {
         { id: 2, text: "3", value: 3 },
         { id: 3, text: "4", value: 4 },
         { id: 4, text: "5", value: 5 },
-      ]
+      ],
+
+      formGroupsData: [
+        {id: 0, labelText: "Struktura studijskog programa", name: "structure"},
+        {id: 1, labelText: "Znanja koja nudi", name: "knowledgeOffering"},
+        {id: 2, labelText: "Ispunjenje ocekivanja", name: "meetsExpectations"},
+      ],
+
+      previousFormData: []
+    }
+  },
+  mounted() {
+    if(this.currentRoute === this.$store.state.previousSurveyName) {
+        this.previousFormData = this.$store.state.previousSurveyName;
+    }
+    else {
+      this.previousFormData = [];
     }
   }
 };

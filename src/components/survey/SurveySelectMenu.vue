@@ -1,5 +1,5 @@
 <template>
-  <select v-model="selectValue" @change="handleSelectedValue(options[0].id)" name="" id="" class="form-group__select" >
+  <select v-model="selectMenuValue" @change="handleSelectedValue(options[0].id)" name="" id="" class="form-group__select" >
       <option disabled selected>--</option>
       <SurveySelectMenuOption :key="option.id" v-for="option in options" :value="option.value">
         {{option.text}}
@@ -13,17 +13,25 @@ import SurveySelectMenuOption from "@/components/survey/SurveySelectMenuOption.v
 export default {
   name: "SurveySelectMenu",
   components: { SurveySelectMenuOption },
-  props: ["options"],
+  props: ["options", "id", "prevData"],
   data() {
     return {
-      selectValue: ""
+      selectMenuValue: ""
     }
   },
   computed: {
     surveyData() {
       let surveyData = this.$store.state.surveyData;
-      surveyData.push(this.selectValue);
+      surveyData[this.id] = this.selectValue;
       return surveyData;
+    },
+    selectValue() {
+      if(this.prevData.length > 0) {
+       return this.prevData[this.id];
+      }
+      else {
+       return this.selectMenuValue;
+      }
     }
   },
   methods: {
@@ -40,7 +48,7 @@ export default {
         this.$store.commit('setGeneralDataClassAttendance', this.selectValue);
       }
       else {
-        console.log(this.surveyData);
+        console.log(`ID ${this.id}: `,this.surveyData[this.id]);
       }
     }
   }

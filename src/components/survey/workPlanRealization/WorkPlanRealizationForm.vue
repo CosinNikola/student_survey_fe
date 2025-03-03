@@ -2,9 +2,14 @@
   <div>
     <div class="form-container">
       <form class="form">
-        <SurveyFormGroup :options="options" labelText="Plan rada nudi neophodne informacije" name="plan_informing"/>
-        <SurveyFormGroup :options="options" labelText="Ocena rasporeda nastave" name="teaching_schedule"/>
-        <SurveyFormGroup :options="options" labelText="Ocena rasporeda konsultacija" name="consultation_schedule"/>
+        <SurveyFormGroup
+          :options="options"
+          v-for="formGroupData in formGroupsData"
+          :key="formGroupData.id"
+          :id="formGroupData.id"
+          :labelText="formGroupData.labelText"
+          :name="formGroupData.name"
+        />
         <FormButton value="Potvrdi" route="/subject-grade" @click="submitData"/>
       </form>
     </div>
@@ -35,7 +40,20 @@ export default {
     submitData(e) {
       e.preventDefault();
       console.log("Work plan grades:", this.formData);
-      this.$store.commit("resetSurveyData");
+      fetch("http://127.0.0.1:8000/api/work-plan-realization", {
+        method: "POST",
+        body: JSON.stringify(this.formData),
+        headers: {
+          "Content-Type": "application/json",
+          "mode": "no-cors",
+          "Access-Control-Allow-Origin": "*",
+        }
+      })
+        .then(res => res.json())
+        .then(data => {
+          console.log(data);
+          this.$store.commit("resetSurveyData");
+        })
     }
   },
   data() {
@@ -46,6 +64,11 @@ export default {
         { id: 2, text: "3", value: 3 },
         { id: 3, text: "4", value: 4 },
         { id: 4, text: "5", value: 5 },
+      ],
+      formGroupsData: [
+        {id: 0, labelText: "Plan rada nudi neophodne informacije", name: "plan_informing"},
+        {id: 1, labelText: "Ocena rasporeda nastave", name: "teaching_schedule"},
+        {id: 2, labelText: "Ocena rasporeda konsultacija", name: "consultation_schedule"},
       ]
     }
   }

@@ -7,6 +7,7 @@ import StudyProgramEvalView from "@/views/StudyProgramEvalView.vue";
 import WorkPlanRealizationView from "@/views/WorkPlanRealizationView.vue";
 import SubjectGradeView from "../views/SubjectGradeView.vue";
 import TeacherGradeView from "@/views/TeacherGradeView.vue";
+import AssociateGradeView from "../views/AssociateGradeView.vue";
 import TextbooksQualityGradeView from "@/views/TextbooksQualityGradeView.vue";
 import StartSurveyView from "@/views/StartSurveyView.vue";
 
@@ -62,6 +63,10 @@ const routes = [
     path: "/teacher-grade",
     name: "teacher-grade",
     component: TeacherGradeView,
+  },{
+    path: "/associate-grade",
+    name: "associate-grade",
+    component: AssociateGradeView,
   },{
     path: "/textbooks-grade",
     name: "textbooks-grade",

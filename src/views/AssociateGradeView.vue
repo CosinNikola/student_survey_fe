@@ -1,6 +1,6 @@
 <template>
-  <SurveyContainer title="Ocena nastavnika: TITULA IME PREZIME">
-    <TeacherGradeForm type="teacher"/>
+  <SurveyContainer title="Ocena saradnika: TITULA IME PREZIME">
+    <TeacherGradeForm type="associate"/>
   </SurveyContainer>
 </template>
 
@@ -8,7 +8,7 @@
 import SurveyContainer from "@/components/survey/SurveyContainer.vue";
 import TeacherGradeForm from "@/components/survey/teacherGrade/TeacherGradeForm.vue";
 export default {
-  name: "TeacherGradeView",
+  name: "AssociateGradeView",
   components: {
     SurveyContainer,
     TeacherGradeForm

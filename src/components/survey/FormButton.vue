@@ -1,11 +1,16 @@
 <template>
-  <button class="form-button"><router-link class="text-white" :to="route">{{value}}</router-link></button>
+  <button class="form-button" @click="redirect">{{value}}</button>
 </template>
 
 <script>
 export default {
   name: "FormButton",
-  props: ["value", "route"]
+  props: ["value", "route"],
+  methods: {
+    redirect() {
+      this.$router.push(this.route);
+    }
+  },
 };
 </script>
 
