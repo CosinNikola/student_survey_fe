@@ -31,12 +31,17 @@ export default {
   },
   computed: {
     formData() {
+      if(this.previousFormData) {
+        return this.previousFormData;
+      }
+      else {
       return {
         structure: this.$store.state.surveyData[0],
         knowledge_offering: this.$store.state.surveyData[1],
         meets_expectations: this.$store.state.surveyData[2],
         study_program_by_year_id: sessionStorage.getItem("spyid"),
       };
+      }
     },
     currentRoute() {
      return this.$route.path.substring(1);
@@ -47,6 +52,7 @@ export default {
     submitData(e) {
       e.preventDefault();
       console.log("Study program eval:", this.formData);
+      localStorage.setItem(this.formDataLabel, JSON.stringify(this.formData));
       // fetch("http://127.0.0.1:8000/api/study-program-eval", {
       //   method: "POST",
       //   body: JSON.stringify(this.formData),
@@ -60,9 +66,10 @@ export default {
       //   .then(data => {
       //     console.log(data);
       //   })
-          this.$store.commit("saveSurveyData", this.formData);
-          this.$store.commit("saveSurveyName", "study-program-eval");
-          this.$store.commit("resetSurveyData");
+      //     this.$store.commit("saveSurveyData", this.formData);
+      //     this.$store.commit("saveSurveyName", "study-program-eval");
+      //     this.$store.commit("resetSurveyData");
+
     }
   },
   data() {
@@ -77,20 +84,34 @@ export default {
 
       formGroupsData: [
         {id: 0, labelText: "Struktura studijskog programa", name: "structure"},
-        {id: 1, labelText: "Znanja koja nudi", name: "knowledgeOffering"},
-        {id: 2, labelText: "Ispunjenje ocekivanja", name: "meetsExpectations"},
+        {id: 1, labelText: "Znanja koja nudi", name: "knowledge_offering"},
+        {id: 2, labelText: "Ispunjenje ocekivanja", name: "meets_expectations"},
       ],
 
-      previousFormData: []
+      previousFormData: [],
+
+      formDataLabel: "studyProgramEval"
     }
   },
-  mounted() {
-    if(this.currentRoute === this.$store.state.previousSurveyName) {
-        this.previousFormData = this.$store.state.previousSurveyName;
+  beforeMount() {
+    // console.log(this.$store.state.previousSurveyData);
+    // console.log(this.currentRoute);
+    // console.log(this.$store.state.previousSurveyName);
+    // console.log(window.location.hash.substring(1));
+    // if(this.currentRoute === this.$store.state.previousSurveyName) {
+    //     this.previousFormData = this.$store.state.previousSurveyData;
+    //     console.log(this.previousFormData);
+    // }
+    // else {
+    //   this.previousFormData = [];
+    // }
+    if(localStorage.getItem(this.formDataLabel)) {
+        this.previousFormData = JSON.parse(localStorage.getItem(this.formDataLabel));
     }
     else {
       this.previousFormData = [];
     }
+    console.log(this.previousFormData);
   }
 };
 </script>

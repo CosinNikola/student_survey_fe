@@ -9,6 +9,7 @@
           :id="formGroupData.id"
           :labelText="formGroupData.labelText"
           :name="formGroupData.name"
+          :prevData="previousFormData"
         />
         <FormButton value="Potvrdi" route="/subject-grade" @click="submitData"/>
       </form>
@@ -28,10 +29,15 @@ export default {
   },
   computed: {
     formData() {
-      return {
-        availibility: this.$store.state.surveyData[0],
-        coverage: this.$store.state.surveyData[1],
-        subject_study_program_id: sessionStorage.getItem("sspid"),
+      if(this.previousFormData) {
+        return this.previousFormData;
+      }
+      else {
+        return {
+          availibility: this.$store.state.surveyData[0],
+          coverage: this.$store.state.surveyData[1],
+          subject_study_program_id: sessionStorage.getItem("sspid"),
+        }
       }
     }
   },
@@ -39,20 +45,21 @@ export default {
     submitData(e) {
       e.preventDefault();
       console.log("Textbooks grades:", this.formData);
-      fetch("http://127.0.0.1:8000/api/textbooks-quality", {
-        method: "POST",
-        body: JSON.stringify(this.formData),
-        headers: {
-          "Content-Type": "application/json",
-          "mode": "no-cors",
-          "Access-Control-Allow-Origin": "*",
-        }
-      })
-        .then(res => res.json())
-        .then(data => {
-          console.log(data);
-          this.$store.commit("resetSurveyData");
-        })
+      localStorage.setItem(this.formDataLabel, JSON.stringify(this.formData));
+      // fetch("http://127.0.0.1:8000/api/textbooks-quality", {
+      //   method: "POST",
+      //   body: JSON.stringify(this.formData),
+      //   headers: {
+      //     "Content-Type": "application/json",
+      //     "mode": "no-cors",
+      //     "Access-Control-Allow-Origin": "*",
+      //   }
+      // })
+      //   .then(res => res.json())
+      //   .then(data => {
+      //     console.log(data);
+      //     this.$store.commit("resetSurveyData");
+      //   })
     }
   },
   data() {
@@ -67,8 +74,19 @@ export default {
       formGroupsData: [
         {id: 0, labelText: "Nivo dostupnosti neophodne literature", name: "availibility"},
         {id: 1, labelText: "Nivo pokrivenosti nastavnog programa datom literaturom", name: "coverage"},
-      ]
+      ],
+      previousFormData: [],
+      formDataLabel: "textbooksQualityGrade"
     }
+  },
+  beforeMount() {
+    if(localStorage.getItem(this.formDataLabel)) {
+      this.previousFormData = JSON.parse(localStorage.getItem(this.formDataLabel));
+    }
+    else {
+      this.previousFormData = [];
+    }
+    console.log(this.previousFormData);
   }
 };
 </script>

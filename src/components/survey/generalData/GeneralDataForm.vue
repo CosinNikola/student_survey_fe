@@ -85,20 +85,23 @@ export default {
 
       console.log("Sending survey data:", this.formData);
 
-      fetch("http://127.0.0.1:8000/api/general-data", {
-        method: "POST",
-        body: JSON.stringify(this.formData),
-        headers: {
-          "Content-Type": "application/json",
-          "mode": "no-cors",
-          "Access-Control-Allow-Origin": "*",
-        }
-      })
-        .then(res => res.json())
-        .then(data => {
-          console.log(data);
-        })
+      // fetch("http://127.0.0.1:8000/api/general-data", {
+      //   method: "POST",
+      //   body: JSON.stringify(this.formData),
+      //   headers: {
+      //     "Content-Type": "application/json",
+      //     "mode": "no-cors",
+      //     "Access-Control-Allow-Origin": "*",
+      //   }
+      // })
+      //   .then(res => res.json())
+      //   .then(data => {
+      //     console.log(data);
+      //   })
     }
+  },
+  mounted() {
+    console.log(window.location.hash.substring(1));
   }
 };
 </script>

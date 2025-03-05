@@ -15,7 +15,11 @@ import FormButton from "@/components/survey/FormButton.vue";
 
 export default {
     name: "TokenLoginForm",
-  components: { FormButton }
+  components: { FormButton },
+
+  mounted() {
+      console.log(this.$route);
+  }
 }
 </script>
 <style scoped>

@@ -1,4 +1,5 @@
 import { createRouter, createWebHashHistory } from "vue-router";
+
 import HomeView from "../views/HomeView.vue";
 import TokenLoginView from "../views/TokenLoginView.vue";
 import LoginView from "../views/LoginView.vue";
@@ -10,6 +11,7 @@ import TeacherGradeView from "@/views/TeacherGradeView.vue";
 import AssociateGradeView from "../views/AssociateGradeView.vue";
 import TextbooksQualityGradeView from "@/views/TextbooksQualityGradeView.vue";
 import StartSurveyView from "@/views/StartSurveyView.vue";
+
 
 const routes = [
   {
@@ -78,5 +80,6 @@ const router = createRouter({
   history: createWebHashHistory(),
   routes,
 });
+
 
 export default router;

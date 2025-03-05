@@ -9,6 +9,7 @@
           :id="formGroupData.id"
           :labelText="formGroupData.labelText"
           :name="formGroupData.name"
+          :prevData="previousFormData"
         />
         <FormButton value="Potvrdi" route="/teacher-grade" @click="submitData"/>
       </form>
@@ -28,35 +29,41 @@ export default {
   },
   computed: {
     formData() {
-      return {
-        requirements_clarity: this.$store.state.surveyData[0],
-        volume_of_material: this.$store.state.surveyData[1],
-        new_knowledge: this.$store.state.surveyData[2],
-        practical_dimension: this.$store.state.surveyData[3],
-        useful_for_direction: this.$store.state.surveyData[4],
-        quality_of_materials: this.$store.state.surveyData[5],
-        subject_study_program_id: sessionStorage.getItem("sspid"),
+      if (this.previousFormData) {
+        return this.previousFormData;
+      } else {
+        return {
+          requirements_clarity: this.$store.state.surveyData[0],
+          volume_of_material: this.$store.state.surveyData[1],
+          new_knowledge: this.$store.state.surveyData[2],
+          practical_dimension: this.$store.state.surveyData[3],
+          useful_for_direction: this.$store.state.surveyData[4],
+          quality_of_materials: this.$store.state.surveyData[5],
+          subject_study_program_id: sessionStorage.getItem("sspid"),
+        }
       }
     }
+
   },
   methods: {
     submitData(e) {
       e.preventDefault();
       console.log("Subject grades:", this.formData);
-      fetch("http://127.0.0.1:8000/api/subject-grade", {
-        method: "POST",
-        body: JSON.stringify(this.formData),
-        headers: {
-          "Content-Type": "application/json",
-          "mode": "no-cors",
-          "Access-Control-Allow-Origin": "*",
-        }
-      })
-        .then(res => res.json())
-        .then(data => {
-          console.log(data);
-          this.$store.commit("resetSurveyData");
-        })
+      localStorage.setItem(this.formDataLabel, JSON.stringify(this.formData));
+      // fetch("http://127.0.0.1:8000/api/subject-grade", {
+      //   method: "POST",
+      //   body: JSON.stringify(this.formData),
+      //   headers: {
+      //     "Content-Type": "application/json",
+      //     "mode": "no-cors",
+      //     "Access-Control-Allow-Origin": "*",
+      //   }
+      // })
+      //   .then(res => res.json())
+      //   .then(data => {
+      //     console.log(data);
+      //   })
+      //     this.$store.commit("resetSurveyData");
     }
   },
   data() {
@@ -75,8 +82,19 @@ export default {
         {id: 3, labelText: "Ima prakticnu primenu i omogucava razvoj vestina", name: "practical_dimension"},
         {id: 4, labelText: "Koristan je za usmerenje", name: "useful_for_direction"},
         {id: 5, labelText: "Ocena kvaliteta nastavnog materijala", name: "quality_of_materials"},
-      ]
+      ],
+      previousFormData: [],
+      formDataLabel: "subjectGrade"
     }
+  },
+  beforeMount() {
+    if(localStorage.getItem(this.formDataLabel)) {
+      this.previousFormData = JSON.parse(localStorage.getItem(this.formDataLabel));
+    }
+    else {
+      this.previousFormData = [];
+    }
+    console.log(this.previousFormData);
   }
 };
 </script>

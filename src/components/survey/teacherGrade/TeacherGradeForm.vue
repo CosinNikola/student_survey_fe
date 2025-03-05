@@ -9,6 +9,7 @@
           :id="formGroupData.id"
           :labelText="formGroupData.labelText"
           :name="formGroupData.name"
+          :prevData="previousFormData"
         />
 
         <FormButton value="Potvrdi" :route="route" @click="submitData"/>
@@ -30,6 +31,17 @@ export default {
   props: ["type"],
   computed: {
     formDataQuality() {
+      if(this.previousFormData) {
+        return {
+          clarity_of_presentation: this.previousFormData.clarity_of_presentation,
+          examples_quality: this.previousFormData.examples_quality,
+          teacher_answers_email: this.previousFormData.teacher_answers_email,
+          correct_relationship: this.previousFormData.correct_relationship,
+          subject: this.previousFormData.subject_study_program_id,
+        }
+      }
+      else {
+
       return {
         clarity_of_presentation: this.$store.state.surveyData[0],
         examples_quality: this.$store.state.surveyData[1],
@@ -37,49 +49,62 @@ export default {
         correct_relationship: this.$store.state.surveyData[3],
         subject_study_program_id: sessionStorage.getItem("sspid"),
       }
+      }
     },
     formDataAssessment() {
+      if(this.previousFormData) {
+        return {
+          objectivity: this.previousFormData.objectivity,
+          results_publication: this.previousFormData.results_publication,
+          exam_public: this.previousFormData.exam_public,
+          subject_study_program_id: this.previousFormData.subject_study_program_id,
+        }
+      }
+      else {
       return {
         objectivity: this.$store.state.surveyData[4],
         results_publication: this.$store.state.surveyData[5],
         exam_public: this.$store.state.surveyData[6],
         subject_study_program_id: sessionStorage.getItem("sspid"),
       }
+      }
     }
   },
   methods: {
     submitData(e) {
       e.preventDefault();
-      console.log("Teacher quality grades:", this.formDataQuality);
-      console.log("Teacher assessment grades: ", this.formDataAssessment);
-      fetch("http://127.0.0.1:8000/api/teacher-quality", {
-        method: "POST",
-        body: JSON.stringify(this.formDataQuality),
-        headers: {
-          "Content-Type": "application/json",
-          "mode": "no-cors",
-          "Access-Control-Allow-Origin": "*",
-        }
-      })
-        .then(res => res.json())
-        .then(data => {
-          console.log(data);
-
-          fetch("http://127.0.0.1:8000/api/teacher-assessment", {
-            method: "POST",
-            body: JSON.stringify(this.formDataAssessment),
-            headers: {
-              "Content-Type": "application/json",
-              "mode": "no-cors",
-              "Access-Control-Allow-Origin": "*",
-            }
-          })
-            .then(res => res.json())
-            .then(data => {
-              console.log(data);
-             this.$store.commit("resetSurveyData");
-            })
-        })
+      // console.log("Teacher quality grades:", this.formDataQuality);
+      // console.log("Teacher assessment grades: ", this.formDataAssessment);
+      localStorage.setItem(this.formDataLabels[0], JSON.stringify(this.formDataQuality));
+      localStorage.setItem(this.formDataLabels[1], JSON.stringify(this.formDataAssessment));
+      // fetch("http://127.0.0.1:8000/api/teacher-quality", {
+      //   method: "POST",
+      //   body: JSON.stringify(this.formDataQuality),
+      //   headers: {
+      //     "Content-Type": "application/json",
+      //     "mode": "no-cors",
+      //     "Access-Control-Allow-Origin": "*",
+      //   }
+      // })
+      //   .then(res => res.json())
+      //   .then(data => {
+      //     console.log(data);
+      //
+      //     fetch("http://127.0.0.1:8000/api/teacher-assessment", {
+      //       method: "POST",
+      //       body: JSON.stringify(this.formDataAssessment),
+      //       headers: {
+      //         "Content-Type": "application/json",
+      //         "mode": "no-cors",
+      //         "Access-Control-Allow-Origin": "*",
+      //       }
+      //     })
+      //       .then(res => res.json())
+      //       .then(data => {
+      //         console.log(data);
+      //       })
+      //   })
+      //        this.$store.commit("resetSurveyData")
     }
   },
   data() {
@@ -100,8 +125,24 @@ export default {
         {id: 4, labelText: "Nivo objektivnosti pri ocenjivanju", name: "objectivity"},
         {id: 5, labelText: "Nastavnik objavljuje rezultate predispitnih aktivnosti", name: "results_publication"},
         {id: 6, labelText: "Nivo javnosti ispita", name: "exam_public"},
-      ]
+      ],
+      previousFormData: [],
+      formDataLabels: (this.type === "teacher")? ["teacherQuality", "teacherAssessment"] : ["associateQuality", "associateAssessment"]
     }
+  },
+  beforeMount() {
+    if(localStorage.getItem(this.formDataLabels[0]) && localStorage.getItem(this.formDataLabels[1])) {
+      let previousFormData1 = JSON.parse(localStorage.getItem(this.formDataLabels[0]));
+      let previousFormData2 = JSON.parse(localStorage.getItem(this.formDataLabels[1]));
+      this.previousFormData = {
+        ...previousFormData1,
+        ...previousFormData2,
+      };
+    }
+    else {
+      this.previousFormData = [];
+    }
+    console.log(this.previousFormData);
   }
 };
 </script>

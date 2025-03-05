@@ -1,6 +1,7 @@
 <template>
   <div>
     <div class="form-container">
+      {{currentRoute}}
       <form class="form">
         <SurveyFormGroup
           :options="options"
@@ -9,6 +10,7 @@
           :id="formGroupData.id"
           :labelText="formGroupData.labelText"
           :name="formGroupData.name"
+          :prevData="previousFormData"
         />
         <FormButton value="Potvrdi" route="/subject-grade" @click="submitData"/>
       </form>
@@ -28,32 +30,44 @@ export default {
   },
   computed: {
     formData() {
-      return {
+      if(this.previousFormData) {
+        return this.previousFormData;
+      }
+      else {
+        return {
           plan_informing: this.$store.state.surveyData[0],
           teaching_schedule: this.$store.state.surveyData[1],
           consultation_schedule: this.$store.state.surveyData[2],
           study_program_by_year_id: sessionStorage.getItem("spyid"),
+        }
       }
+    },
+    currentRoute() {
+      return this.$route.path.substring(1);
     }
   },
   methods: {
     submitData(e) {
       e.preventDefault();
       console.log("Work plan grades:", this.formData);
-      fetch("http://127.0.0.1:8000/api/work-plan-realization", {
-        method: "POST",
-        body: JSON.stringify(this.formData),
-        headers: {
-          "Content-Type": "application/json",
-          "mode": "no-cors",
-          "Access-Control-Allow-Origin": "*",
-        }
-      })
-        .then(res => res.json())
-        .then(data => {
-          console.log(data);
-          this.$store.commit("resetSurveyData");
-        })
+      localStorage.setItem(this.formDataLabel, JSON.stringify(this.formData));
+      // fetch("http://127.0.0.1:8000/api/work-plan-realization", {
+      //   method: "POST",
+      //   body: JSON.stringify(this.formData),
+      //   headers: {
+      //     "Content-Type": "application/json",
+      //     "mode": "no-cors",
+      //     "Access-Control-Allow-Origin": "*",
+      //   }
+      // })
+      //   .then(res => res.json())
+      //   .then(data => {
+      //     console.log(data);
+      //     this.$store.commit("resetSurveyData");
+      //   })
+      // this.$store.commit("saveSurveyData", this.formData);
+      // this.$store.commit("saveSurveyName", "study-program-eval");
+      // this.$store.commit("resetSurveyData");
     }
   },
   data() {
@@ -69,8 +83,29 @@ export default {
         {id: 0, labelText: "Plan rada nudi neophodne informacije", name: "plan_informing"},
         {id: 1, labelText: "Ocena rasporeda nastave", name: "teaching_schedule"},
         {id: 2, labelText: "Ocena rasporeda konsultacija", name: "consultation_schedule"},
-      ]
+      ],
+      previousFormData: [],
+      formDataLabel: "workPlanRealization"
     }
+  },
+  beforeMount() {
+    // console.log(this.$store.state.previousSurveyData);
+    // console.log(this.currentRoute);
+    // console.log(this.$store.state.previousSurveyName);
+    // if(this.currentRoute === this.$store.state.previousSurveyName) {
+    //   this.previousFormData = this.$store.state.previousSurveyData;
+    //   console.log(this.previousFormData);
+    // }
+    // else {
+    //   this.previousFormData = [];
+    // }
+    if(localStorage.getItem(this.formDataLabel)) {
+      this.previousFormData = JSON.parse(localStorage.getItem(this.formDataLabel));
+    }
+    else {
+      this.previousFormData = [];
+    }
+    console.log(this.previousFormData);
   }
 };
 </script>

@@ -28,7 +28,9 @@ const store = createStore({
         knowledge_offering: 0,
         meets_expectations: 0,
         study_program_by_year_id: 0
-      }
+      },
+
+      lastSurveyTimestamp: ""
     }
   },
   mutations: {
@@ -61,6 +63,9 @@ const store = createStore({
     saveSurveyName(state, payload) {
       state.previousSurveyName = payload;
     },
+    setLastSurveyTimestamp(state, payload) {
+      state.previousSurveyName = payload;
+    },
 
     resetSurveyData(state) {
       state.surveyData = [];
@@ -70,3 +75,27 @@ const store = createStore({
 
 
 createApp(App).use(router).use(store).mount("#app");
+
+router.beforeEach((to, from, next) => {
+  if (from.name) {
+    next(); // Allow forward navigation
+    setTimeout(() => {
+      window.history.replaceState(null, "", window.location.href);
+    }, 100); // Clear history after navigating
+  } else {
+    next();
+  }
+});
+
+
+// window.addEventListener("popstate", () => {
+//   router.replace(window.location.hash.substring(1)); // Redirect to home instead of going back
+// });
+
+// Prevent back navigation
+// window.history.pushState(null, "", window.location.href);
+// window.addEventListener("popstate", (event) => {
+//   event.preventDefault();
+//   window.history.pushState(null, "", window.location.href);
+// });
+//

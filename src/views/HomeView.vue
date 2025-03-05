@@ -14,5 +14,10 @@ export default {
   components: {
     HelloWorld,
   },
+
+  beforeCreate() {
+    console.log(this.$route);
+    // this.$router.replace(this.$route.redirectedFrom);
+  }
 };
 </script>
