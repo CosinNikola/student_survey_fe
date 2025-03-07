@@ -11,6 +11,7 @@ import TeacherGradeView from "@/views/TeacherGradeView.vue";
 import AssociateGradeView from "../views/AssociateGradeView.vue";
 import TextbooksQualityGradeView from "@/views/TextbooksQualityGradeView.vue";
 import StartSurveyView from "@/views/StartSurveyView.vue";
+import FinalPageView from "@/views/FinalPageView.vue";
 
 
 const routes = [
@@ -73,6 +74,10 @@ const routes = [
     path: "/textbooks-grade",
     name: "textbooks-grade",
     component: TextbooksQualityGradeView,
+  },{
+    path: "/survey-end",
+    name: "survey-end",
+    component: FinalPageView,
   },
 ];
 

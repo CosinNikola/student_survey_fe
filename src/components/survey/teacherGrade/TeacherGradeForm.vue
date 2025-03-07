@@ -31,7 +31,7 @@ export default {
   props: ["type"],
   computed: {
     formDataQuality() {
-      if(this.previousFormData) {
+      if(Object.keys(this.previousFormData).length > 0) {
         return {
           clarity_of_presentation: this.previousFormData.clarity_of_presentation,
           examples_quality: this.previousFormData.examples_quality,
@@ -52,7 +52,7 @@ export default {
       }
     },
     formDataAssessment() {
-      if(this.previousFormData) {
+      if(Object.keys(this.previousFormData).length > 0) {
         return {
           objectivity: this.previousFormData.objectivity,
           results_publication: this.previousFormData.results_publication,
@@ -75,8 +75,15 @@ export default {
       e.preventDefault();
       // console.log("Teacher quality grades:", this.formDataQuality);
       // console.log("Teacher assessment grades: ", this.formDataAssessment);
-      localStorage.setItem(this.formDataLabels[0], JSON.stringify(this.formDataQuality));
-      localStorage.setItem(this.formDataLabels[1], JSON.stringify(this.formDataAssessment));
+      if(this.formDataAssessment.objectivity && this.formDataAssessment.results_publication && this.formDataAssessment.exam_public && this.formDataAssessment.subject_study_program_id
+      && this.formDataQuality.clarity_of_presentation && this.formDataQuality.examples_quality && this.formDataQuality.teacher_answers_email && this.formDataQuality.correct_relationship && this.formDataQuality.subject_study_program_id) {
+        localStorage.setItem(this.formDataLabels[0], JSON.stringify(this.formDataQuality));
+        localStorage.setItem(this.formDataLabels[1], JSON.stringify(this.formDataAssessment));
+        this.$router.push(this.route);
+      }
+      else {
+        alert('Morate popuniti sva polja!');
+      }
       // fetch("http://127.0.0.1:8000/api/teacher-quality", {
       //   method: "POST",
       //   body: JSON.stringify(this.formDataQuality),
@@ -104,7 +111,7 @@ export default {
       //         console.log(data);
       //       })
       //   })
-      //        this.$store.commit("resetSurveyData")
+             this.$store.commit("resetSurveyData");
     }
   },
   data() {
@@ -126,7 +133,7 @@ export default {
         {id: 5, labelText: "Nastavnik objavljuje rezultate predispitnih aktivnosti", name: "results_publication"},
         {id: 6, labelText: "Nivo javnosti ispita", name: "exam_public"},
       ],
-      previousFormData: [],
+      previousFormData: {},
       formDataLabels: (this.type === "teacher")? ["teacherQuality", "teacherAssessment"] : ["associateQuality", "associateAssessment"]
     }
   },
@@ -140,7 +147,7 @@ export default {
       };
     }
     else {
-      this.previousFormData = [];
+      this.previousFormData = {};
     }
     console.log(this.previousFormData);
   }

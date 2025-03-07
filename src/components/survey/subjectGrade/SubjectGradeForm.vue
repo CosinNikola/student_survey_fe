@@ -29,7 +29,7 @@ export default {
   },
   computed: {
     formData() {
-      if (this.previousFormData) {
+      if (Object.keys(this.previousFormData).length > 0) {
         return this.previousFormData;
       } else {
         return {
@@ -49,7 +49,17 @@ export default {
     submitData(e) {
       e.preventDefault();
       console.log("Subject grades:", this.formData);
-      localStorage.setItem(this.formDataLabel, JSON.stringify(this.formData));
+      if(this.formData.requirements_clarity && this.formData.volume_of_material &&
+        this.formData.new_knowledge && this.formData.practical_dimension &&
+        this.formData.useful_for_direction && this.formData.quality_of_materials &&
+        this.formData.subject_study_program_id
+      ) {
+        localStorage.setItem(this.formDataLabel, JSON.stringify(this.formData));
+        this.$router.push("/teacher-grade");
+      }
+      else {
+        alert('Morate popuniti sva polja!');
+      }
       // fetch("http://127.0.0.1:8000/api/subject-grade", {
       //   method: "POST",
       //   body: JSON.stringify(this.formData),
@@ -83,7 +93,7 @@ export default {
         {id: 4, labelText: "Koristan je za usmerenje", name: "useful_for_direction"},
         {id: 5, labelText: "Ocena kvaliteta nastavnog materijala", name: "quality_of_materials"},
       ],
-      previousFormData: [],
+      previousFormData: {},
       formDataLabel: "subjectGrade"
     }
   },
@@ -92,7 +102,7 @@ export default {
       this.previousFormData = JSON.parse(localStorage.getItem(this.formDataLabel));
     }
     else {
-      this.previousFormData = [];
+      this.previousFormData = {};
     }
     console.log(this.previousFormData);
   }

@@ -31,7 +31,7 @@ export default {
   },
   computed: {
     formData() {
-      if(this.previousFormData) {
+      if(Object.keys(this.previousFormData).length > 0) {
         return this.previousFormData;
       }
       else {
@@ -52,7 +52,13 @@ export default {
     submitData(e) {
       e.preventDefault();
       console.log("Study program eval:", this.formData);
-      localStorage.setItem(this.formDataLabel, JSON.stringify(this.formData));
+      if(this.formData.structure && this.formData.knowledge_offering && this.formData.meets_expectations && this.formData.study_program_by_year_id) {
+       localStorage.setItem(this.formDataLabel, JSON.stringify(this.formData));
+       this.$router.push('/work-plan-realization');
+      }
+      else {
+        alert("Morate popuniti sva polja!");
+      }
       // fetch("http://127.0.0.1:8000/api/study-program-eval", {
       //   method: "POST",
       //   body: JSON.stringify(this.formData),
@@ -68,7 +74,7 @@ export default {
       //   })
       //     this.$store.commit("saveSurveyData", this.formData);
       //     this.$store.commit("saveSurveyName", "study-program-eval");
-      //     this.$store.commit("resetSurveyData");
+          this.$store.commit("resetSurveyData");
 
     }
   },
@@ -88,7 +94,7 @@ export default {
         {id: 2, labelText: "Ispunjenje ocekivanja", name: "meets_expectations"},
       ],
 
-      previousFormData: [],
+      previousFormData: {},
 
       formDataLabel: "studyProgramEval"
     }
@@ -109,7 +115,7 @@ export default {
         this.previousFormData = JSON.parse(localStorage.getItem(this.formDataLabel));
     }
     else {
-      this.previousFormData = [];
+      this.previousFormData = {};
     }
     console.log(this.previousFormData);
   }

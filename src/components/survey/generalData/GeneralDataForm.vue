@@ -2,10 +2,10 @@
   <div>
     <div class="form-container">
       <form class="form">
-        <SurveyFormGroup :options="optionsGender" labelText="Pol" name="pol"/>
-        <SurveyFormGroup :options="optionsStatus" labelText="Status" name="status"/>
-        <SurveyFormGroup :options="optionsAvgGrade" labelText="Prosecna ocena" name="avgGrade"/>
-        <SurveyFormGroup :options="optionsAttendance" labelText="Prisustvo na nastavi" name="attendance"/>
+        <SurveyFormGroup :options="optionsGender" labelText="Pol" name="gender" :prevData="previousFormData"/>
+        <SurveyFormGroup :options="optionsStatus" labelText="Status" name="status" :prevData="previousFormData"/>
+        <SurveyFormGroup :options="optionsAvgGrade" labelText="Prosecna ocena" name="avg_grade" :prevData="previousFormData"/>
+        <SurveyFormGroup :options="optionsAttendance" labelText="Prisustvo na nastavi" name="class_attendance" :prevData="previousFormData"/>
         <FormButton value="Potvrdi" type="submit" @click="submitData" route="/study-program-eval"/>
       </form>
   </div>
@@ -45,6 +45,8 @@ export default {
         {id: "classAttendance", text: "Cesto", value:"cesto"},
         {id: "classAttendance", text: "Redovno", value:"redovno"},
       ],
+      previousFormData: [],
+      formDataLabel: "generalData"
       // formData: {
       //   gender: "",
       //   status: "",
@@ -68,22 +70,29 @@ export default {
       return this.$store.state.generalDataClassAttendance;
     },
     formData() {
-      return this.$store.state.generalData;
+      return {
+        gender: this.$store.state.generalDataGender,
+        status: this.$store.state.generalDataStatus,
+        avg_grade: this.$store.state.generalDataAvgGrade,
+        class_attendance: this.$store.state.generalDataClassAttendance,
+        study_program_by_year_id: sessionStorage.getItem("spyid"),
+      }
     }
   },
   methods: {
     submitData(e){
       e.preventDefault();
 
-      this.$store.commit("setGeneralData", {
-        gender: this.formDataGender,
-        status: this.formDataStatus,
-        avg_grade: this.formDataAvgGrade,
-        class_attendance: this.formDataClassAttendance,
-        study_program_by_year_id: sessionStorage.getItem("spyid"),
-      });
+      // this.$store.commit("setGeneralData", {
+      //   gender: this.formDataGender,
+      //   status: this.formDataStatus,
+      //   avg_grade: this.formDataAvgGrade,
+      //   class_attendance: this.formDataClassAttendance,
+      //   study_program_by_year_id: sessionStorage.getItem("spyid"),
+      // });
 
       console.log("Sending survey data:", this.formData);
+      localStorage.setItem(this.formDataLabel, JSON.stringify(this.formData));
 
       // fetch("http://127.0.0.1:8000/api/general-data", {
       //   method: "POST",
@@ -100,8 +109,14 @@ export default {
       //   })
     }
   },
-  mounted() {
-    console.log(window.location.hash.substring(1));
+  beforeMount() {
+    if(localStorage.getItem(this.formDataLabel)) {
+      this.previousFormData = JSON.parse(localStorage.getItem(this.formDataLabel));
+    }
+    else {
+      this.previousFormData = [];
+    }
+    console.log(this.previousFormData);
   }
 };
 </script>
@@ -115,12 +130,4 @@ export default {
     color: rgb(50,50,50);
     width: 100%;
   }
-
-
-
-
-
-
-
-
 </style>

@@ -1,5 +1,5 @@
 <template>
-  <button class="form-button" @click="redirect">{{value}}</button>
+  <button class="form-button">{{value}}</button>
 </template>
 
 <script>

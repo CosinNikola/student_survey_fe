@@ -4,21 +4,52 @@
         <form>
           <div class="form-group__token">
             <label id="token-label">Token</label>
-            <input type="text" id="token" placeholder="Unesite vaš token..."/>
+            <input type="text" id="token" placeholder="Unesite vaš token..." v-model="token"/>
           </div>
-          <FormButton value="Potvrdi" route="/general-data"/>
+          <button class="button" @click="login">Prijavite se</button>
         </form>
     </div>
 </template>
 <script>
-import FormButton from "@/components/survey/FormButton.vue";
 
 export default {
     name: "TokenLoginForm",
-  components: { FormButton },
-
-  mounted() {
-      console.log(this.$route);
+  components: { },
+  data() {
+      return {
+        token: "",
+        formData: {
+          token: "",
+        }
+      }
+  },
+  methods: {
+      login(e) {
+        this.formData = {
+          token: this.token
+        };
+        e.preventDefault();
+        fetch("http://127.0.0.1:8000/api/token-login", {
+          method: "PUT",
+          body: JSON.stringify(this.formData),
+          headers: {
+            "Content-Type": "application/json",
+            "mode": "no-cors",
+            "Access-Control-Allow-Origin": "*",
+          }
+        })
+          .then(res => {
+            if(res.status === 200){
+              this.$router.push("/general-data");
+            }
+            else if (res.status === 404 && this.formData.token === "") {
+              alert("Morate uneti token!");
+            }
+            else if (res.status === 404) {
+              alert("Nazalost, Vas token je istekao!");
+            }
+          })
+      }
   }
 }
 </script>
@@ -89,4 +120,20 @@ export default {
       align-items: flex-start;
       width: 100%;
     }
+
+  .button {
+    color: white;
+    background-color: rgb(50,50,50);
+    border: 0;
+    border-radius: 10px;
+    font-size: 16px;
+    font-weight: bold;
+    margin-top: 20px;
+    padding: 8px 10px;
+    width: 100%
+  }
+  .button:hover {
+    cursor: pointer;
+    background-color: gray;
+  }
 </style>
