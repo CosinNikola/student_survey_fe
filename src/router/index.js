@@ -12,6 +12,14 @@ import AssociateGradeView from "../views/AssociateGradeView.vue";
 import TextbooksQualityGradeView from "@/views/TextbooksQualityGradeView.vue";
 import StartSurveyView from "@/views/StartSurveyView.vue";
 import FinalPageView from "@/views/FinalPageView.vue";
+import AdminDashboardView from "@/views/AdminDashboardView.vue";
+import TeacherDashboardView from "@/views/TeacherDashboardView.vue";
+import SurveyReport from "@/components/adminDashboard/SurveyReport.vue";
+import GeneralDataReport from "@/components/reports/GeneralDataReport.vue";
+import ReportByStudyProgram from "@/components/reports/ReportByStudyProgram.vue";
+import ReportByStudyProgramAndYear from "@/components/reports/ReportByStudyProgramAndYear.vue";
+import ReportBySubject from "@/components/reports/ReportBySubject.vue";
+import ReportByTeacher from "@/components/reports/ReportByTeacher.vue";
 
 
 const routes = [
@@ -78,6 +86,40 @@ const routes = [
     path: "/survey-end",
     name: "survey-end",
     component: FinalPageView,
+  },{
+    path: "/admin-dashboard",
+    name: "admin-dashboard",
+    component: AdminDashboardView,
+    children: [
+      {
+        path: 'survey-report',
+        component: SurveyReport,
+        children: [
+        {
+          path: "general-data",
+          component: GeneralDataReport
+        },
+          {
+          path: "study-program",
+          component: ReportByStudyProgram
+        },{
+          path: "study-program-and-year",
+          component: ReportByStudyProgramAndYear
+        },{
+          path: "subject",
+          component: ReportBySubject
+        },{
+          path: "teacher",
+          component: ReportByTeacher
+        },
+        ]
+      }
+
+    ]
+  },{
+    path: "/teacher-dashboard",
+    name: "teacher-dashboard",
+    component: TeacherDashboardView,
   },
 ];
 
