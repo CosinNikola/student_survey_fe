@@ -1,29 +1,27 @@
 <template>
   <div>
-    <h1>Rezultati anketa po smeru:</h1>
-    <label for="">Odaberite studijski program:</label>
-    <select v-model="studyProgramId">
-      <option v-for="studyProgram in this.studyProgramsData" :value="studyProgram.id" :key="studyProgram.id">
-        {{studyProgram.name}}
+    <label for="">Odaberite predmet:</label>
+    <select v-model="teacherId">
+      <option v-for="teacher in this.teachersData" :value="teacher.id" :key="teacher.id">
+       {{teacher.vocation}} {{teacher.last_name}} {{teacher.first_name}}
       </option>
     </select>
     <button @click="submitData">Pretraži</button>
     <SurveyReportDataDisplay />
   </div>
-
 </template>
-
 <script>
 import SurveyReportDataDisplay from "@/components/adminDashboard/SurveyReportDataDisplay.vue";
+
 export default {
-  name: "ReportByStudyProgram",
+  name: "SubjectGradeByTeacher",
   components: { SurveyReportDataDisplay },
   props: ["data"],
   data() {
     return {
-      studyProgramsData: [],
-      studyProgramId: "",
-      studyProgramEvalData: {}
+      teachersData: [],
+      teacherId: "",
+      subjectGradeData: {}
     }
   },
   computed: {
@@ -32,7 +30,7 @@ export default {
     }
   },
   beforeMount() {
-    fetch("http://127.0.0.1:8000/api/study-programs", {
+    fetch("http://127.0.0.1:8000/api/teachers", {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -42,14 +40,14 @@ export default {
     })
       .then(res => res.json())
       .then(data => {
-        this.studyProgramsData = data;
+        this.teachersData = data;
       });
   },
   methods: {
     submitData(e) {
       e.preventDefault();
-      if(this.studyProgramId !== "") {
-        fetch("http://127.0.0.1:8000/api/study-program-eval-by-sp?study_program_id=" + this.studyProgramId, {
+      if(this.teacherId !== "") {
+        fetch("http://127.0.0.1:8000/api/subject-grade-by-teacher?teacher_id=" + this.teacherId, {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
@@ -60,7 +58,7 @@ export default {
           .then(res => res.json())
           .then(data => {
             console.log(data);
-            this.studyProgramEvalData = data;
+            this.subjectGradeData = data;
           });
       }
 
@@ -69,15 +67,7 @@ export default {
 };
 </script>
 
-<style scoped>
-label {
-  font-weight: bold;
-}
-h1 {
-  margin-left: 0;
-}
 
-.container {
-  text-align: start;
-}
+<style scoped>
+
 </style>

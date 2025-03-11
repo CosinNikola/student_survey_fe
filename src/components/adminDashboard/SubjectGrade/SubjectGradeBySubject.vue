@@ -1,29 +1,27 @@
 <template>
   <div>
-    <h1>Rezultati anketa po smeru:</h1>
-    <label for="">Odaberite studijski program:</label>
-    <select v-model="studyProgramId">
-      <option v-for="studyProgram in this.studyProgramsData" :value="studyProgram.id" :key="studyProgram.id">
-        {{studyProgram.name}}
+    <label for="">Odaberite predmet:</label>
+    <select v-model="subjectId">
+      <option v-for="subject in this.subjectsData" :value="subject.id" :key="subject.id">
+        {{subject.name}}
       </option>
     </select>
     <button @click="submitData">Pretraži</button>
     <SurveyReportDataDisplay />
   </div>
-
 </template>
-
 <script>
 import SurveyReportDataDisplay from "@/components/adminDashboard/SurveyReportDataDisplay.vue";
+
 export default {
-  name: "ReportByStudyProgram",
+  name: "SubjectGradeBySubject",
   components: { SurveyReportDataDisplay },
   props: ["data"],
   data() {
     return {
-      studyProgramsData: [],
-      studyProgramId: "",
-      studyProgramEvalData: {}
+      subjectsData: [],
+      subjectId: "",
+      subjectGradeData: {}
     }
   },
   computed: {
@@ -32,7 +30,7 @@ export default {
     }
   },
   beforeMount() {
-    fetch("http://127.0.0.1:8000/api/study-programs", {
+    fetch("http://127.0.0.1:8000/api/subjects", {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -42,14 +40,14 @@ export default {
     })
       .then(res => res.json())
       .then(data => {
-        this.studyProgramsData = data;
+        this.subjectsData = data;
       });
   },
   methods: {
     submitData(e) {
       e.preventDefault();
-      if(this.studyProgramId !== "") {
-        fetch("http://127.0.0.1:8000/api/study-program-eval-by-sp?study_program_id=" + this.studyProgramId, {
+      if(this.subjectId !== "") {
+        fetch("http://127.0.0.1:8000/api/subject-grade-by-subject?subject_id=" + this.subjectId, {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
@@ -60,7 +58,7 @@ export default {
           .then(res => res.json())
           .then(data => {
             console.log(data);
-            this.studyProgramEvalData = data;
+            this.subjectGradeData = data;
           });
       }
 
@@ -69,15 +67,7 @@ export default {
 };
 </script>
 
-<style scoped>
-label {
-  font-weight: bold;
-}
-h1 {
-  margin-left: 0;
-}
 
-.container {
-  text-align: start;
-}
+<style scoped>
+
 </style>

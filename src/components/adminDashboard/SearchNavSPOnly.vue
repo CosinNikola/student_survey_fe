@@ -9,21 +9,13 @@
       <router-link class="search-nav__link" :to="routes[1]">
         Pretraga po studijskom programu i godini studija
       </router-link>
-    </li> <li class="search-nav__item">
-        <router-link class="search-nav__link" :to="routes[2]">
-          Pretraga po predmetu
-        </router-link>
-      </li> <li class="search-nav__item">
-      <router-link class="search-nav__link" :to="routes[3]">
-        Pretraga po profesoru
-      </router-link>
     </li>
     </ul>
   </div>
 </template>
 <script>
 export default {
-  name: "SearchNav",
+  name: "SearchNavSPOnly",
   props: ["routes"]
 };
 </script>

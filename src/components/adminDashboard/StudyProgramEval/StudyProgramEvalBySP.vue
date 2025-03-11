@@ -1,6 +1,5 @@
 <template>
   <div>
-    <h1>Rezultati anketa po smeru:</h1>
     <label for="">Odaberite studijski program:</label>
     <select v-model="studyProgramId">
       <option v-for="studyProgram in this.studyProgramsData" :value="studyProgram.id" :key="studyProgram.id">
@@ -8,22 +7,24 @@
       </option>
     </select>
     <button @click="submitData">Pretraži</button>
-    <SurveyReportDataDisplay />
+    <SurveyReportDataDisplay v-for="(studyProgramEval,i) in studyProgramEvalData" :data="studyProgramEval" :dataLabels="dataLabels" :key="i" />
   </div>
-
 </template>
-
 <script>
 import SurveyReportDataDisplay from "@/components/adminDashboard/SurveyReportDataDisplay.vue";
+
 export default {
-  name: "ReportByStudyProgram",
+  name: "StudyProgramEvalBySP",
   components: { SurveyReportDataDisplay },
   props: ["data"],
   data() {
     return {
       studyProgramsData: [],
       studyProgramId: "",
-      studyProgramEvalData: {}
+      studyProgramEvalData: {},
+      dataLabels: [
+        "Struktura studijskog programa", "Znanja koja nudi", "Ispunio očekivanja", "Studijski program", "Godina studija", "Ukupno anketa"
+      ]
     }
   },
   computed: {
@@ -69,15 +70,7 @@ export default {
 };
 </script>
 
-<style scoped>
-label {
-  font-weight: bold;
-}
-h1 {
-  margin-left: 0;
-}
 
-.container {
-  text-align: start;
-}
+<style scoped>
+
 </style>

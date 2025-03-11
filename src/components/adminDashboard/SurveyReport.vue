@@ -1,49 +1,23 @@
 <template>
-  <div class="search-nav">
-    <ul class="search-nav__list">
-      <li class="search-nav__item">
-        <router-link class="search-nav__link" to="/admin-dashboard/survey-report/general-data">
-          Opšta anketa
-        </router-link>
-      </li> <li class="search-nav__item">
-      <router-link class="search-nav__link" to="/admin-dashboard/survey-report/study-program">
-        Pretraga po smeru
-      </router-link>
-    </li> <li class="search-nav__item">
-      <router-link class="search-nav__link" to="/admin-dashboard/survey-report/study-program-and-year">
-        Pretraga po smeru i godini
-      </router-link>
-    </li> <li class="search-nav__item">
-      <router-link class="search-nav__link" to="/admin-dashboard/survey-report/subject">
-        Pretraga po predmetu
-      </router-link>
-    </li> <li class="search-nav__item">
-      <router-link class="search-nav__link" to="/admin-dashboard/survey-report/teacher">
-        Pretraga po profesoru
-      </router-link>
-    </li>
-    </ul>
+  <SurveyReportNav />
+  <div class="display">
+    <router-view></router-view>
   </div>
-  <router-view></router-view>
 </template>
 <script>
+import SurveyReportNav from "@/components/adminDashboard/SurveyReportNav.vue";
+
 export default {
-  name: "SurveyReport"
+  name: "SurveyReport",
+  components: { SurveyReportNav },
+  props: ["title"]
 };
 </script>
 
 
 <style scoped>
-.search-nav__item {
-  display: inline;
-  font-weight: bold;
-  border-right: 2px solid rgb(50,50,50);
-  margin-right: 10px;
-  padding-right: 10px;
-}
-
-.search-nav__link {
-  text-decoration: none;
-  color: rgb(50,50,50);
-}
+  .display {
+    padding: 0 30px 0 30px;
+    text-align: start;
+  }
 </style>

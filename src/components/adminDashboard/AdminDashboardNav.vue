@@ -6,7 +6,8 @@
       </li>
       <li class="nav-item">
         <router-link class="nav-link" to="/admin-dashboard/survey-report">Pregled anketa</router-link>
-      </li><li class="nav-item">
+      </li>
+      <li class="nav-item">
         <a class="nav-link">Nova anketa</a>
       </li><li class="nav-item">
         <a class="nav-link">Korisnici</a>

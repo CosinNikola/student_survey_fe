@@ -16,10 +16,20 @@ import AdminDashboardView from "@/views/AdminDashboardView.vue";
 import TeacherDashboardView from "@/views/TeacherDashboardView.vue";
 import SurveyReport from "@/components/adminDashboard/SurveyReport.vue";
 import GeneralDataReport from "@/components/reports/GeneralDataReport.vue";
-import ReportByStudyProgram from "@/components/reports/ReportByStudyProgram.vue";
-import ReportByStudyProgramAndYear from "@/components/reports/ReportByStudyProgramAndYear.vue";
-import ReportBySubject from "@/components/reports/ReportBySubject.vue";
-import ReportByTeacher from "@/components/reports/ReportByTeacher.vue";
+import StudyProgramEvalReport from "@/components/adminDashboard/StudyProgramEval/StudyProgramEvalReport.vue";
+import WorkPlanRealizationReport from "@/components/adminDashboard/WorkPlan/WorkPlanRealizationReport.vue";
+import SubjectGradeReport from "@/components/adminDashboard/SubjectGrade/SubjectGradeReport.vue";
+import TeacherGradeReport from "@/components/adminDashboard/TeacherGradeReport.vue";
+import AssociateGradeReport from "@/components/adminDashboard/AssociateGradeReport.vue";
+import TextbooksGradeReport from "@/components/adminDashboard/TextbooksGradeReport.vue";
+import StudyProgramEvalBySP from "@/components/adminDashboard/StudyProgramEval/StudyProgramEvalBySP.vue";
+import StudyProgramEvalBySPYear from "@/components/adminDashboard/StudyProgramEval/StudyProgramEvalBySPYear.vue";
+import WorkPlanRealizationBySP from "@/components/adminDashboard/WorkPlan/WorkPlanRealizationBySP.vue";
+import WorkPlanRealizationBySPYear from "@/components/adminDashboard/WorkPlan/WorkPlanRealizationBySPYear.vue";
+import SubjectGradeBySP from "@/components/adminDashboard/SubjectGrade/SubjectGradeBySP.vue";
+import SubjectGradeBySPYear from "@/components/adminDashboard/SubjectGrade/SubjectGradeBySPYear.vue";
+import SubjectGradeBySubject from "@/components/adminDashboard/SubjectGrade/SubjectGradeBySubject.vue";
+import SubjectGradeByTeacher from "@/components/adminDashboard/SubjectGrade/SubjectGradeByTeacher.vue";
 
 
 const routes = [
@@ -100,18 +110,63 @@ const routes = [
           component: GeneralDataReport
         },
           {
-          path: "study-program",
-          component: ReportByStudyProgram
-        },{
-          path: "study-program-and-year",
-          component: ReportByStudyProgramAndYear
-        },{
-          path: "subject",
-          component: ReportBySubject
-        },{
-          path: "teacher",
-          component: ReportByTeacher
-        },
+            path: "study-program-eval",
+            component: StudyProgramEvalReport,
+            children: [
+              {
+                path: "by-study-program",
+                component: StudyProgramEvalBySP
+              }, {
+                path: "by-study-program-and-year",
+                component: StudyProgramEvalBySPYear
+              },
+            ]
+             },
+          {
+            path: "work-plan-realization",
+            component: WorkPlanRealizationReport,
+            children: [
+              {
+                path: "by-study-program",
+                component: WorkPlanRealizationBySP
+              }, {
+                path: "by-study-program-and-year",
+                component: WorkPlanRealizationBySPYear
+              },
+            ]
+          },
+          {
+            path: "subject-grade",
+            component: SubjectGradeReport,
+            children: [
+              {
+                path: "by-study-program",
+                component: SubjectGradeBySP
+              }, {
+                path: "by-study-program-and-year",
+                component: SubjectGradeBySPYear
+              },{
+                path: "by-subject",
+                component: SubjectGradeBySubject
+              },{
+                path: "by-teacher",
+                component: SubjectGradeByTeacher
+              },
+            ]
+          },
+          {
+            path: "teacher-grade",
+            component: TeacherGradeReport
+          },
+          {
+            path: "associate-grade",
+            component: AssociateGradeReport
+          },{
+            path: "textbooks-grade",
+            component: TextbooksGradeReport
+          },
+
+
         ]
       }
 
@@ -128,5 +183,17 @@ const router = createRouter({
   routes,
 });
 
-
+// {
+//   path: "study-program",
+//     component: ReportByStudyProgram
+// },{
+//   path: "study-program-and-year",
+//     component: ReportByStudyProgramAndYear
+// },{
+//   path: "subject",
+//     component: ReportBySubject
+// },{
+//   path: "teacher",
+//     component: ReportByTeacher
+// },
 export default router;

@@ -22,6 +22,5 @@ export default {
     margin-top: 15px;
     margin-left: 15px;
     align-items: start;
-    padding-left: 30px;
   }
 </style>
