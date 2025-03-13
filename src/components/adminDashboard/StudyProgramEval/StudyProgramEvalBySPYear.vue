@@ -13,7 +13,10 @@
       <option value="3">3</option>
     </select>
     <button @click="submitData">Pretraži</button>
+    <div v-if="showData === 1">
     <SurveyReportDataDisplay v-for="(studyProgramEval,i) in studyProgramEvalData" :data="studyProgramEval" :dataLabels="dataLabels" :key="i" />
+    </div>
+    <div v-else-if="showData === 2">Trenutno nema podataka!</div>
   </div>
 </template>
 <script>
@@ -25,13 +28,14 @@ export default {
   props: ["data"],
   data() {
     return {
-      studyProgramsData: [],
+      studyProgramsData: this.$store.state.studyProgramsData,
       studyProgramId: "",
       yearOfStudy: "",
       studyProgramEvalData: {},
       dataLabels: [
         "Struktura studijskog programa", "Znanja koja nudi", "Ispunio očekivanja", "Studijski program", "Godina studija", "Ukupno anketa"
-      ]
+      ],
+      showData: 0
     }
   },
   computed: {
@@ -39,21 +43,7 @@ export default {
       return [];
     }
   },
-  beforeMount() {
-    fetch("http://127.0.0.1:8000/api/study-programs", {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        "mode": "no-cors",
-        "Access-Control-Allow-Origin": "*",
-      }
-    })
-      .then(res => res.json())
-      .then(data => {
-        this.studyProgramsData = data;
-      });
-  },
-  methods: {
+   methods: {
     submitData(e) {
       e.preventDefault();
       if(this.studyProgramId !== "") {
@@ -69,6 +59,12 @@ export default {
           .then(data => {
             console.log(data);
             this.studyProgramEvalData = data;
+            if(this.studyProgramEvalData.length > 0) {
+              this.showData = 1;
+            }
+            else {
+              this.showData = 2;
+            }
           });
       }
 
@@ -82,6 +78,8 @@ export default {
   .container {
     display: flex;
     flex-direction: column;
-    width: 35%;
+  }
+  label {
+    font-weight: 500;
   }
 </style>

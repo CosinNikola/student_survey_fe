@@ -1,14 +1,15 @@
 <template>
+  <hr>
   <div>
     <label for="">Odaberite predmet: </label>
-    <select v-model="teacherId">
-      <option v-for="teacher in this.teachersData" :value="teacher.id" :key="teacher.id">
-       {{teacher.vocation}} {{teacher.last_name}} {{teacher.first_name}}
+    <select v-model="subjectId">
+      <option v-for="subject in this.subjectsData" :value="subject.id" :key="subject.id">
+        {{subject.name}}
       </option>
     </select>
     <button @click="submitData">Pretraži</button>
     <div v-if="showData === 1">
-    <SurveyReportDataDisplay v-for="(subjectGrade,i) in subjectGradeData" :data="subjectGrade" :dataLabels="dataLabels" :key="i" />
+      <SurveyReportDataDisplay v-for="(associateGrade,i) in associateGradeData" :data="associateGrade" :dataLabels="dataLabels" :key="i" />
     </div>
     <div v-else-if="showData === 2">Trenutno nema podataka!</div>
   </div>
@@ -17,15 +18,15 @@
 import SurveyReportDataDisplay from "@/components/adminDashboard/SurveyReportDataDisplay.vue";
 
 export default {
-  name: "SubjectGradeByTeacher",
+  name: "AssociateAssessmentBySubject",
   components: { SurveyReportDataDisplay },
   props: ["data"],
   data() {
     return {
-      teachersData: this.$store.state.teachersData,
-      teacherId: "",
-      subjectGradeData: {},
-      dataLabels: ["Jasnoća zahteva na predmetu", "Obim gradiva je optimalan", "Nudi nova znanja", "Ima prakticnu primenu i omogucava razvoj vestina", "Koristan je za usmerenje", "Ocena kvaliteta nastavnog materijala", "Studjiski program", "Godina studija", "Ukupno anketa"],
+      subjectsData: this.$store.state.subjectsData,
+      subjectId: "",
+      associateGradeData: {},
+      dataLabels: ["Nivo objektivnosti pri ocenjivanju", "Nastavnik objavljuje rezultate predispitnih aktivnosti", "Nivo javnosti ispita", "Studijski program", "Godina studija", "Predmet", "Ime saradnika", "Prezime saradnika", "Broj anketa"],
       showData: 0
     }
   },
@@ -38,8 +39,8 @@ export default {
   methods: {
     submitData(e) {
       e.preventDefault();
-      if(this.teacherId !== "") {
-        fetch("http://127.0.0.1:8000/api/subject-grade-by-teacher?teacher_id=" + this.teacherId, {
+      if(this.studyProgramId !== "") {
+        fetch("http://127.0.0.1:8000/api/associate-assessment-quality-by-subject?subject_id=" + this.subjectId, {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
@@ -50,8 +51,8 @@ export default {
           .then(res => res.json())
           .then(data => {
             console.log(data);
-            this.subjectGradeData = data;
-            if(this.subjectGradeData.length > 0) {
+            this.associateGradeData = data;
+            if(this.associateGradeData.length > 0) {
               this.showData = 1;
             }
             else {

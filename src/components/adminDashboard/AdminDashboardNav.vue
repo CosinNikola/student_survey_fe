@@ -2,7 +2,7 @@
   <div class="container">
     <ul class="nav">
       <li class="nav-item">
-        <a class="nav-link">Pocetna</a>
+        <router-link  to="/admin-dashboard" class="nav-link">Pocetna</router-link>
       </li>
       <li class="nav-item">
         <router-link class="nav-link" to="/admin-dashboard/survey-report">Pregled anketa</router-link>

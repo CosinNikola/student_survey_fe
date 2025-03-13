@@ -1,9 +1,9 @@
 <template>
-  <div v-for="(dataLabel, i) in dataLabels" :key="i">
-    <label>{{dataLabel}}:</label>
+  <hr>
+  <div v-for="(dataLabel, i) in dataLabels" :key="i" class="display">
+    <label>{{dataLabel}}: </label>
     <span>{{this.dataValues[i]}}</span>
   </div>
-    <hr>
 </template>
 <script>
 export default {
@@ -11,7 +11,19 @@ export default {
   props: ["dataLabels", "data"],
   computed: {
     dataValues() {
-      return Object.values(this.data);
+      return Object.values(this.data).map(num => {
+        if(typeof num === "number") {
+          return num;
+        }
+        else {
+        if(!isNaN(Number(num))) {
+          return Number(num).toFixed(2);
+        }
+        else {
+          return num;
+        }
+        }
+      })
     }
   },
   mounted() {
@@ -22,5 +34,11 @@ export default {
 
 
 <style scoped>
+  .display {
+    font-weight: 500;
+  }
 
+  span {
+    font-weight: bold;
+  }
 </style>

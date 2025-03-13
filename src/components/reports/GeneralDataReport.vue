@@ -2,7 +2,7 @@
   <div class="container">
   <h1>Rezultati opšte ankete:</h1>
     <label for="">Odaberite studijski program:</label>
-  <select v-model="this.studyProgramId">
+  <select v-model="this.studyProgramId" class="form-group__select">
     <option :key="studyProgram.id" v-for="studyProgram in studyProgramsData" :value="studyProgram.id">{{studyProgram.name}}</option>
   </select>
     <button @click="submitData">Pretraži</button>
@@ -17,7 +17,7 @@ export default {
   components: { ReportGeneralDataDisplay },
   data() {
     return {
-      studyProgramsData: [],
+      studyProgramsData: this.$store.state.studyProgramsData,
       studyProgramId: "",
       requestData: {},
       showReportData: false,

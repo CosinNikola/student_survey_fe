@@ -15,7 +15,7 @@
         </router-link>
       </li> <li class="search-nav__item">
       <router-link class="search-nav__link" :to="routes[3]">
-        Pretraga po profesoru
+        Pretraga po nastavniku
       </router-link>
     </li>
     </ul>
@@ -33,7 +33,7 @@ export default {
 .search-nav__item {
   display: inline;
   font-weight: bold;
-  border-right: 2px solid rgb(50,50,50);
+
   margin-right: 10px;
   padding-right: 10px;
 }
@@ -49,5 +49,9 @@ export default {
 
 .search-nav__list {
   padding-left: 0;
+}
+
+.search-nav__item:not(:last-child) {
+  border-right: 2px solid rgb(50,50,50);
 }
 </style>

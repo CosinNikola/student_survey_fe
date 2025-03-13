@@ -7,10 +7,7 @@
       </option>
     </select>
     <button @click="submitData">Pretraži</button>
-    <div v-if="showData === 1">
-    <SurveyReportDataDisplay v-for="(subjectGrade,i) in subjectGradeData" :data="subjectGrade" :dataLabels="dataLabels" :key="i" />
-    </div>
-    <div v-else-if="showData === 2">Trenutno nema podataka!</div>
+    <SurveyReportDataDisplay v-for="(textbooksQuality,i) in textbooksQualityData" :data="textbooksQuality" :dataLabels="dataLabels" :key="i" />
   </div>
 </template>
 <script>
@@ -24,9 +21,8 @@ export default {
     return {
       subjectsData: this.$store.state.subjectsData,
       subjectId: "",
-      subjectGradeData: {},
-      dataLabels: ["Jasnoća zahteva na predmetu", "Obim gradiva je optimalan", "Nudi nova znanja", "Ima prakticnu primenu i omogucava razvoj vestina", "Koristan je za usmerenje", "Ocena kvaliteta nastavnog materijala", "Studjiski program", "Godina studija", "Ukupno anketa"],
-      showData: 0
+      textbooksQualityData: {},
+      dataLabels: ["Nivo dostupnosti neophodne literature", "Nivo pokrivenosti nastavnog programa datom literaturom", "Studijski program", "Godina studija", "Naziv predmeta", "Ime profesora", "Prezime profesora", "Ukupno anketa"],
     }
   },
   computed: {
@@ -39,7 +35,7 @@ export default {
     submitData(e) {
       e.preventDefault();
       if(this.subjectId !== "") {
-        fetch("http://127.0.0.1:8000/api/subject-grade-by-subject?subject_id=" + this.subjectId, {
+        fetch("http://127.0.0.1:8000/api/textbooks-quality-grade-by-subject?subject_id=" + this.subjectId, {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
@@ -50,13 +46,7 @@ export default {
           .then(res => res.json())
           .then(data => {
             console.log(data);
-            this.subjectGradeData = data;
-            if(this.subjectGradeData.length > 0) {
-              this.showData = 1;
-            }
-            else {
-              this.showData = 2;
-            }
+            this.textbooksQualityData = data;
           });
       }
 
@@ -67,7 +57,7 @@ export default {
 
 
 <style scoped>
-  label {
-    font-weight: 500;
-  }
+label {
+  font-weight: 500;
+}
 </style>

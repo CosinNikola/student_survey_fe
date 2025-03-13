@@ -13,7 +13,10 @@
       <option value="3">3</option>
     </select>
     <button @click="submitData">Pretraži</button>
-    <SurveyReportDataDisplay />
+    <div v-if="showData === 1">
+    <SurveyReportDataDisplay v-for="(workPlanRealization,i) in workPlanRealizationData" :data="workPlanRealization" :dataLabels="dataLabels" :key="i" />
+    </div>
+    <div v-else-if="showData === 2">Trenutno nema podataka!</div>
   </div>
 </template>
 <script>
@@ -25,10 +28,12 @@ export default {
   props: ["data"],
   data() {
     return {
-      studyProgramsData: [],
+      studyProgramsData: this.$store.state.studyProgramsData,
       studyProgramId: "",
       yearOfStudy: "",
-      studyProgramEvalData: {}
+      workPlanRealizationData: [],
+      dataLabels: [ "Plan rada nudi neophodne informacije", "Ocena rasporeda nastave", "Ocena rasporeda konsultacija", "Studijski program", "Godina studija", "Ukupno anketa" ],
+      showData: 0
     }
   },
   computed: {
@@ -36,25 +41,12 @@ export default {
       return [];
     }
   },
-  beforeMount() {
-    fetch("http://127.0.0.1:8000/api/study-programs", {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        "mode": "no-cors",
-        "Access-Control-Allow-Origin": "*",
-      }
-    })
-      .then(res => res.json())
-      .then(data => {
-        this.studyProgramsData = data;
-      });
-  },
+
   methods: {
     submitData(e) {
       e.preventDefault();
       if(this.studyProgramId !== "") {
-        fetch("http://127.0.0.1:8000/api/study-program-eval-by-sp-yos?study_program_id=" + this.studyProgramId + "&year_of_study=" + this.yearOfStudy, {
+        fetch("http://127.0.0.1:8000/api/work-plan-realization-by-sp-yos?study_program_id=" + this.studyProgramId + "&year_of_study=" + this.yearOfStudy, {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
@@ -65,7 +57,13 @@ export default {
           .then(res => res.json())
           .then(data => {
             console.log(data);
-            // this.studyProgramEvalData = data;
+            this.workPlanRealizationData = data;
+            if(this.workPlanRealizationData.length > 0) {
+              this.showData = 1;
+            }
+            else {
+              this.showData = 2;
+            }
           });
       }
 
@@ -79,6 +77,8 @@ export default {
 .container {
   display: flex;
   flex-direction: column;
-  width: 35%;
+}
+label {
+  font-weight: 500;
 }
 </style>

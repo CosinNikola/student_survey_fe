@@ -1,35 +1,38 @@
 <template>
-  <div>
-    <label for="">Odaberite studijski program: </label>
+  <div class="container">
+    <label for="">Odaberite studijski program:</label>
     <select v-model="studyProgramId">
       <option v-for="studyProgram in this.studyProgramsData" :value="studyProgram.id" :key="studyProgram.id">
         {{studyProgram.name}}
       </option>
     </select>
+    <label for="">Odaberite godinu studija:</label>
+    <select v-model="yearOfStudy">
+      <option value="1">1</option>
+      <option value="2">2</option>
+      <option value="3">3</option>
+    </select>
     <button @click="submitData">Pretraži</button>
     <div v-if="showData === 1">
-    <SurveyReportDataDisplay v-for="(studyProgramEval,i) in studyProgramEvalData" :data="studyProgramEval" :dataLabels="dataLabels" :key="i"/>
-    </div>
-    <div v-else-if="showData === 2">
-      <p>Trenutno nema podataka!</p>
-    </div>
+    <SurveyReportDataDisplay v-for="(teacherGrade,i) in teacherGradeData" :data="teacherGrade" :dataLabels="dataLabels" :key="i" />
+  </div>
+  <div v-else-if="showData === 2">Trenutno nema podataka</div>
   </div>
 </template>
 <script>
 import SurveyReportDataDisplay from "@/components/adminDashboard/SurveyReportDataDisplay.vue";
 
 export default {
-  name: "StudyProgramEvalBySP",
+  name: "TeacherAssessmentBySPYear",
   components: { SurveyReportDataDisplay },
   props: ["data"],
   data() {
     return {
       studyProgramsData: this.$store.state.studyProgramsData,
       studyProgramId: "",
-      studyProgramEvalData: {},
-      dataLabels: [
-        "Struktura studijskog programa", "Znanja koja nudi", "Ispunio očekivanja", "Studijski program", "Godina studija", "Ukupno anketa"
-      ],
+      yearOfStudy: "",
+      teacherGradeData: [],
+      dataLabels: ["Nivo objektivnosti pri ocenjivanju", "Nastavnik objavljuje rezultate predispitnih aktivnosti", "Nivo javnosti ispita", "Studijski program", "Godina studija", "Predmet", "Ime profesora", "Prezime profesora", "Broj anketa"],
       showData: 0
     }
   },
@@ -43,7 +46,7 @@ export default {
     submitData(e) {
       e.preventDefault();
       if(this.studyProgramId !== "") {
-        fetch("http://127.0.0.1:8000/api/study-program-eval-by-sp?study_program_id=" + this.studyProgramId, {
+        fetch("http://127.0.0.1:8000/api/teacher-assessment-grade-by-sp-yos?study_program_id=" + this.studyProgramId + "&year_of_study=" + this.yearOfStudy, {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
@@ -54,8 +57,8 @@ export default {
           .then(res => res.json())
           .then(data => {
             console.log(data);
-            this.studyProgramEvalData = data;
-            if(this.studyProgramEvalData.length > 0) {
+            this.teacherGradeData = data;
+            if(this.teacherGradeData.length > 0) {
               this.showData = 1;
             }
             else {
@@ -71,7 +74,12 @@ export default {
 
 
 <style scoped>
-  label {
-    font-weight: 500;
-  }
+.container {
+  display: flex;
+  flex-direction: column;
+}
+
+label {
+  font-weight: bold;
+}
 </style>

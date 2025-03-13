@@ -19,9 +19,7 @@ import GeneralDataReport from "@/components/reports/GeneralDataReport.vue";
 import StudyProgramEvalReport from "@/components/adminDashboard/StudyProgramEval/StudyProgramEvalReport.vue";
 import WorkPlanRealizationReport from "@/components/adminDashboard/WorkPlan/WorkPlanRealizationReport.vue";
 import SubjectGradeReport from "@/components/adminDashboard/SubjectGrade/SubjectGradeReport.vue";
-import TeacherGradeReport from "@/components/adminDashboard/TeacherGradeReport.vue";
-import AssociateGradeReport from "@/components/adminDashboard/AssociateGradeReport.vue";
-import TextbooksGradeReport from "@/components/adminDashboard/TextbooksGradeReport.vue";
+import TeacherGradeReport from "@/components/adminDashboard/TeacherGrade/TeacherGradeReport.vue";
 import StudyProgramEvalBySP from "@/components/adminDashboard/StudyProgramEval/StudyProgramEvalBySP.vue";
 import StudyProgramEvalBySPYear from "@/components/adminDashboard/StudyProgramEval/StudyProgramEvalBySPYear.vue";
 import WorkPlanRealizationBySP from "@/components/adminDashboard/WorkPlan/WorkPlanRealizationBySP.vue";
@@ -30,6 +28,48 @@ import SubjectGradeBySP from "@/components/adminDashboard/SubjectGrade/SubjectGr
 import SubjectGradeBySPYear from "@/components/adminDashboard/SubjectGrade/SubjectGradeBySPYear.vue";
 import SubjectGradeBySubject from "@/components/adminDashboard/SubjectGrade/SubjectGradeBySubject.vue";
 import SubjectGradeByTeacher from "@/components/adminDashboard/SubjectGrade/SubjectGradeByTeacher.vue";
+
+import TeacherQualityReport from "@/components/adminDashboard/TeacherGrade/TeacherQuality/TeacherQualityReport.vue";
+import TeacherAssessmentReport from "@/components/adminDashboard/TeacherGrade/TeacherAssessment/TeacherAssessmentReport.vue";
+import TeacherQualityBySP from "@/components/adminDashboard/TeacherGrade/TeacherQuality/TeacherQualityBySP.vue";
+import TeacherQualityBySPYear from "@/components/adminDashboard/TeacherGrade/TeacherQuality/TeacherQualityBySPYear.vue";
+import TeacherQualityBySubject
+  from "@/components/adminDashboard/TeacherGrade/TeacherQuality/TeacherQualityBySubject.vue";
+import TeacherQualityByTeacher
+  from "@/components/adminDashboard/TeacherGrade/TeacherQuality/TeacherQualityByTeacher.vue";
+import TeacherAssessmentBySP
+  from "@/components/adminDashboard/TeacherGrade/TeacherAssessment/TeacherAssessmentBySP.vue";
+import TeacherAssessmentBySPYear
+  from "@/components/adminDashboard/TeacherGrade/TeacherAssessment/TeacherAssessmentBySPYear.vue";
+import TeacherAssessmentBySubject
+  from "@/components/adminDashboard/TeacherGrade/TeacherAssessment/TeacherAssessmentBySubject.vue";
+import TeacherAssessmentByTeacher
+  from "@/components/adminDashboard/TeacherGrade/TeacherAssessment/TeacherAssessmentByTeacher.vue";
+import AssociateGradeReport from "@/components/adminDashboard/AssociateGrade/AssociateGradeReport.vue";
+import AssociateQualityReport
+  from "@/components/adminDashboard/AssociateGrade/AssociateQuality/AssociateQualityReport.vue";
+import AssociateQualityBySP from "@/components/adminDashboard/AssociateGrade/AssociateQuality/AssociateQualityBySP.vue";
+import AssociateQualityBySPYear
+  from "@/components/adminDashboard/AssociateGrade/AssociateQuality/AssociateQualityBySPYear.vue";
+import AssociateQualityBySubject
+  from "@/components/adminDashboard/AssociateGrade/AssociateQuality/AssociateQualityBySubject.vue";
+import AssociateQualityByAssociate
+  from "@/components/adminDashboard/AssociateGrade/AssociateQuality/AssociateQualityByAssociate.vue";
+import AssociateAssessmentReport
+  from "@/components/adminDashboard/AssociateGrade/AssociateAssessment/AssociateAssessmentReport.vue";
+import AssociateAssessmentBySP
+  from "@/components/adminDashboard/AssociateGrade/AssociateAssessment/AssociateAssessmentBySP.vue";
+import AssociateAssessmentBySPYear
+  from "@/components/adminDashboard/AssociateGrade/AssociateAssessment/AssociateAssessmentBySPYear.vue";
+import AssociateAssessmentBySubject
+  from "@/components/adminDashboard/AssociateGrade/AssociateAssessment/AssociateAssessmentBySubject.vue";
+import AssociateAssessmentByAssociate
+  from "@/components/adminDashboard/AssociateGrade/AssociateAssessment/AssociateAssessmentByAssociate.vue";
+import TextbooksQualityReport from "@/components/adminDashboard/TextbooksQuality/TextbooksQualityReport.vue";
+import TextbooksQualityBySP from "@/components/adminDashboard/TextbooksQuality/TextbooksQualityBySP.vue";
+import TextbooksQualityBySPYear from "@/components/adminDashboard/TextbooksQuality/TextbooksQualityBySPYear.vue";
+import TextbooksQualityBySubject from "@/components/adminDashboard/TextbooksQuality/TextbooksQualityBySubject.vue";
+import TextbooksQualityByTeacher from "@/components/adminDashboard/TextbooksQuality/TextbooksQualityByTeacher.vue";
 
 
 const routes = [
@@ -156,16 +196,117 @@ const routes = [
           },
           {
             path: "teacher-grade",
-            component: TeacherGradeReport
+            component: TeacherGradeReport,
+            children: [
+              {
+              path: "quality",
+              component: TeacherQualityReport,
+              children: [
+                {
+                  path: "by-study-program",
+                  component: TeacherQualityBySP
+                },
+                {
+                  path: "by-study-program-and-year",
+                  component: TeacherQualityBySPYear
+                },{
+                  path: "by-subject",
+                  component: TeacherQualityBySubject
+                },{
+                  path: "by-teacher",
+                  component: TeacherQualityByTeacher
+                },
+              ]
+              },
+              {
+              path: "assessment",
+              component: TeacherAssessmentReport,
+                children: [
+                  {
+                    path: "by-study-program",
+                    component: TeacherAssessmentBySP
+                  },
+                  {
+                    path: "by-study-program-and-year",
+                    component: TeacherAssessmentBySPYear
+                  },{
+                    path: "by-subject",
+                    component: TeacherAssessmentBySubject
+                  },{
+                    path: "by-teacher",
+                    component: TeacherAssessmentByTeacher
+                  },
+                ]
+              },
+            ]
           },
           {
             path: "associate-grade",
-            component: AssociateGradeReport
+            component: AssociateGradeReport,
+            children: [
+              {
+                path: "quality",
+                component: AssociateQualityReport,
+                children: [
+                  {
+                    path: "by-study-program",
+                    component: AssociateQualityBySP
+                  },
+                  {
+                    path: "by-study-program-and-year",
+                    component: AssociateQualityBySPYear
+                  },{
+                    path: "by-subject",
+                    component: AssociateQualityBySubject
+                  },{
+                    path: "by-associate",
+                    component: AssociateQualityByAssociate
+                  },
+                ]
+              },
+              {
+                path: "assessment",
+                component: AssociateAssessmentReport,
+                children: [
+                  {
+                    path: "by-study-program",
+                    component: AssociateAssessmentBySP
+                  },
+                  {
+                    path: "by-study-program-and-year",
+                    component: AssociateAssessmentBySPYear
+                  },{
+                    path: "by-subject",
+                    component: AssociateAssessmentBySubject
+                  },{
+                    path: "by-associate",
+                    component: AssociateAssessmentByAssociate
+                  },
+                ]
+              },
+            ]
           },{
-            path: "textbooks-grade",
-            component: TextbooksGradeReport
+            path: "textbooks-quality",
+            component: TextbooksQualityReport,
+            children: [
+              {
+                path: "by-study-program",
+                component: TextbooksQualityBySP
+              },
+              {
+                path: "by-study-program-and-year",
+                component: TextbooksQualityBySPYear
+              },
+              {
+                path: "by-subject",
+                component: TextbooksQualityBySubject
+              },
+              {
+                path: "by-teacher",
+                component: TextbooksQualityByTeacher
+              },
+            ]
           },
-
 
         ]
       }

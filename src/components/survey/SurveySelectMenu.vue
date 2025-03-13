@@ -61,7 +61,7 @@ export default {
 </script>
 
 
-<style scoped>
+<style>
 
 .form-group__select {
   color: rgb(50,50,50);
@@ -73,4 +73,5 @@ export default {
 }
 .form-group__select:focus {
   outline: none;
-}</style>
+}
+</style>

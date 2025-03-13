@@ -32,7 +32,7 @@ export default {
         Anketa o saradniku
       </router-link>
     </li><li class="search-nav__item">
-      <router-link class="search-nav__link" to="/admin-dashboard/survey-report/textbooks-grade">
+      <router-link class="search-nav__link" to="/admin-dashboard/survey-report/textbooks-quality">
         Anketa o udžbeniku
       </router-link>
     </li>

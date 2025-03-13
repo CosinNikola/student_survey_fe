@@ -3,7 +3,7 @@
     <div v-if="this.showData === 1">
       <div class="data-group" v-for="(reportDataValue, i) in dataValues" :key="i">
         <label class="data-group__label">{{dataLabels[i]}}</label>:
-        <span class="data-group__value">{{dataValues[i]}}</span>
+        <span class="data-group__value">{{dataValues[i]}}</span><span v-if="i === 2">%</span>
       </div>
     </div>
     <div v-else-if="this.showData === 2">Trenutno nema podataka!</div>
@@ -11,7 +11,7 @@
 </template>
 <script>
 export default {
-  name: "ReportDataDisplay",
+  name: "ReportGeneralDataDisplay",
   props: ["dataLabels", "dataValues"],
   data() {
     return {

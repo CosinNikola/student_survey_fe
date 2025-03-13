@@ -1,4 +1,5 @@
 <template>
+  <hr>
   <div>
     <label for="">Odaberite studijski program: </label>
     <select v-model="studyProgramId">
@@ -7,30 +8,22 @@
       </option>
     </select>
     <button @click="submitData">Pretraži</button>
-    <div v-if="showData === 1">
-    <SurveyReportDataDisplay v-for="(studyProgramEval,i) in studyProgramEvalData" :data="studyProgramEval" :dataLabels="dataLabels" :key="i"/>
-    </div>
-    <div v-else-if="showData === 2">
-      <p>Trenutno nema podataka!</p>
-    </div>
+    <SurveyReportDataDisplay v-for="(associateGrade,i) in associateGradeData" :data="associateGrade" :dataLabels="dataLabels" :key="i" />
   </div>
 </template>
 <script>
 import SurveyReportDataDisplay from "@/components/adminDashboard/SurveyReportDataDisplay.vue";
 
 export default {
-  name: "StudyProgramEvalBySP",
+  name: "AssociateQualityBySP",
   components: { SurveyReportDataDisplay },
   props: ["data"],
   data() {
     return {
       studyProgramsData: this.$store.state.studyProgramsData,
       studyProgramId: "",
-      studyProgramEvalData: {},
-      dataLabels: [
-        "Struktura studijskog programa", "Znanja koja nudi", "Ispunio očekivanja", "Studijski program", "Godina studija", "Ukupno anketa"
-      ],
-      showData: 0
+      associateGradeData: {},
+      dataLabels: ["Jasno i razumljivo izlaganje", "Kvalitet primera", "Nastavnik odgovara na mejlove", "Korektan odnos", "Studijski program", "Godina studija", "Predmet", "Ime saradnika", "Prezime saradnika", "Broj anketa"]
     }
   },
   computed: {
@@ -43,7 +36,7 @@ export default {
     submitData(e) {
       e.preventDefault();
       if(this.studyProgramId !== "") {
-        fetch("http://127.0.0.1:8000/api/study-program-eval-by-sp?study_program_id=" + this.studyProgramId, {
+        fetch("http://127.0.0.1:8000/api/associate-quality-grade-by-sp?study_program_id=" + this.studyProgramId, {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
@@ -54,13 +47,8 @@ export default {
           .then(res => res.json())
           .then(data => {
             console.log(data);
-            this.studyProgramEvalData = data;
-            if(this.studyProgramEvalData.length > 0) {
-              this.showData = 1;
-            }
-            else {
-              this.showData = 2;
-            }
+            this.associateGradeData = data;
+
           });
       }
 
@@ -71,7 +59,7 @@ export default {
 
 
 <style scoped>
-  label {
-    font-weight: 500;
-  }
+label {
+  font-weight: 500;
+}
 </style>

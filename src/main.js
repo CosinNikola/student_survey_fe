@@ -30,7 +30,11 @@ const store = createStore({
         study_program_by_year_id: 0
       },
 
-      lastSurveyTimestamp: ""
+      lastSurveyTimestamp: "",
+      studyProgramsData: [],
+      teachersData: [],
+      subjectsData: [],
+      associatesData: []
     }
   },
   mutations: {
@@ -69,6 +73,22 @@ const store = createStore({
 
     resetSurveyData(state) {
       state.surveyData = [];
+    },
+
+    setStudyProgramsData(state, payload) {
+      state.studyProgramsData = payload;
+    },
+
+    setSubjectsData(state, payload) {
+      state.subjectsData = payload;
+    },
+
+    setTeachersData(state, payload) {
+      state.teachersData = payload;
+    },
+
+    setAssociatesData(state, payload) {
+      state.associatesData = payload;
     }
   }
 });
