@@ -1,28 +1,26 @@
 <template>
-  <div>
-    <label for="">Odaberite predmet: </label>
-    <select v-model="subjectId">
-      <option v-for="subject in this.subjectsData" :value="subject.id" :key="subject.id">
-        {{subject.name}}
-      </option>
-    </select>
-    <button @click="submitData">Pretraži</button>
+    <hr>
+  <div class="search-container-wide">
+    <SurveyReportSelectMenu labelText="Odaberite predmet" :data="subjectsData" @sendData="handleSentData"/>
+    <SurveyReportSubmitButton @click="submitData"/>
+  </div>
     <div v-if="showData === 1">
     <SurveyReportDataDisplay v-for="(subjectGrade,i) in subjectGradeData" :data="subjectGrade" :dataLabels="dataLabels" :key="i" />
     </div>
     <div v-else-if="showData === 2">Trenutno nema podataka!</div>
-  </div>
 </template>
 <script>
 import SurveyReportDataDisplay from "@/components/adminDashboard/SurveyReportDataDisplay.vue";
+import SurveyReportSelectMenu from "@/components/reports/SurveyReportSelectMenu.vue";
+import SurveyReportSubmitButton from "@/components/reports/SurveyReportSubmitButton.vue";
 
 export default {
   name: "SubjectGradeBySubject",
-  components: { SurveyReportDataDisplay },
+  components: { SurveyReportDataDisplay, SurveyReportSelectMenu, SurveyReportSubmitButton },
   props: ["data"],
   data() {
     return {
-      subjectsData: this.$store.state.subjectsData,
+      subjectsData:  JSON.parse(localStorage.getItem("subjectsData")),
       subjectId: "",
       subjectGradeData: {},
       dataLabels: ["Jasnoća zahteva na predmetu", "Obim gradiva je optimalan", "Nudi nova znanja", "Ima prakticnu primenu i omogucava razvoj vestina", "Koristan je za usmerenje", "Ocena kvaliteta nastavnog materijala", "Studjiski program", "Godina studija", "Ukupno anketa"],
@@ -36,6 +34,9 @@ export default {
   },
 
   methods: {
+    handleSentData(data) {
+      this.subjectId = data;
+    },
     submitData(e) {
       e.preventDefault();
       if(this.subjectId !== "") {

@@ -1,28 +1,30 @@
 <template>
-  <div>
-    <label for="">Odaberite predmet: </label>
-    <select v-model="teacherId">
-      <option v-for="teacher in this.teachersData" :value="teacher.id" :key="teacher.id">
-        {{teacher.vocation}} {{teacher.last_name}} {{teacher.first_name}}
-      </option>
-    </select>
-    <button @click="submitData">Pretraži</button>
-    <SurveyReportDataDisplay v-for="(textbooksQuality,i) in textbooksQualityData" :data="textbooksQuality" :dataLabels="dataLabels" :key="i" />
+  <hr>
+  <div class="search-container-tight">
+    <SurveyReportSelectMenu labelText="Odaberite profesora" :data="teachersData" @sendData="handleTeacher"/>
+    <SurveyReportSubmitButton @click="submitData"/>
   </div>
+  <div v-if="showData === 1">
+    <SurveyReportDataDisplay v-for="(textbooksQuality,i) in textbooksQualityData" :data="textbooksQuality" :dataLabels="dataLabels" :key="i" />
+    </div>
+  <div v-else-if="showData === 2">Trenutno nema podataka!</div>
 </template>
 <script>
 import SurveyReportDataDisplay from "@/components/adminDashboard/SurveyReportDataDisplay.vue";
+import SurveyReportSelectMenu from "@/components/reports/SurveyReportSelectMenu.vue";
+import SurveyReportSubmitButton from "@/components/reports/SurveyReportSubmitButton.vue";
 
 export default {
   name: "SubjectGradeByTeacher",
-  components: { SurveyReportDataDisplay },
+  components: { SurveyReportDataDisplay, SurveyReportSelectMenu, SurveyReportSubmitButton },
   props: ["data"],
   data() {
     return {
-      teachersData: this.$store.state.teachersData,
+      teachersData: JSON.parse(localStorage.getItem("teachersData")),
       teacherId: "",
       textbooksQualityData: {},
       dataLabels: ["Nivo dostupnosti neophodne literature", "Nivo pokrivenosti nastavnog programa datom literaturom", "Studijski program", "Godina studija", "Naziv predmeta", "Ime profesora", "Prezime profesora", "Ukupno anketa"],
+      showData: 0
     }
   },
   computed: {
@@ -32,6 +34,9 @@ export default {
   },
 
   methods: {
+    handleTeacher(data) {
+      this.teacherId = data;
+    },
     submitData(e) {
       e.preventDefault();
       if(this.teacherId !== "") {
@@ -47,6 +52,12 @@ export default {
           .then(data => {
             console.log(data);
             this.textbooksQualityData = data;
+            if(this.textbooksQualityData.length > 0) {
+              this.showData = 1;
+            }
+            else {
+              this.showData = 2;
+            }
           });
       }
 

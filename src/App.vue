@@ -30,7 +30,6 @@ body {
   background-color: rgb(230, 230, 230);
   font-family: "Montserrat", serif;
   font-optical-sizing: auto;
-  font-weight: 100;
   font-style: normal;
 }
 </style>

@@ -1,29 +1,30 @@
 <template>
   <hr>
-  <div>
-    <label for="">Odaberite predmet: </label>
-    <select v-model="subjectId">
-      <option v-for="subject in this.subjectsData" :value="subject.id" :key="subject.id">
-        {{subject.name}}
-      </option>
-    </select>
-    <button @click="submitData">Pretraži</button>
+  <div class="search-container-wide">
+    <SurveyReportSelectMenu labelText="Odaberite predmet" :data="subjectsData" @sendData="handleSentData"/>
+    <SurveyReportSubmitButton @click="submitData"/>
+  </div>
+  <div v-if="showData === 1">
     <SurveyReportDataDisplay v-for="(associateGrade,i) in associateGradeData" :data="associateGrade" :dataLabels="dataLabels" :key="i" />
   </div>
+  <div v-else-if="showData === 2">Trenutno nema podataka</div>
 </template>
 <script>
 import SurveyReportDataDisplay from "@/components/adminDashboard/SurveyReportDataDisplay.vue";
+import SurveyReportSelectMenu from "@/components/reports/SurveyReportSelectMenu.vue";
+import SurveyReportSubmitButton from "@/components/reports/SurveyReportSubmitButton.vue";
 
 export default {
   name: "AssociateQualityBySubject",
-  components: { SurveyReportDataDisplay },
+  components: { SurveyReportDataDisplay, SurveyReportSelectMenu, SurveyReportSubmitButton  },
   props: ["data"],
   data() {
     return {
-      subjectsData: this.$store.state.subjectsData,
+      subjectsData: JSON.parse(localStorage.getItem("subjectsData")),
       subjectId: "",
       associateGradeData: {},
-      dataLabels: ["Jasno i razumljivo izlaganje", "Kvalitet primera", "Nastavnik odgovara na mejlove", "Korektan odnos", "Studijski program", "Godina studija", "Predmet", "Ime saradnika", "Prezime saradnika", "Broj anketa"]
+      dataLabels: ["Jasno i razumljivo izlaganje", "Kvalitet primera", "Nastavnik odgovara na mejlove", "Korektan odnos", "Studijski program", "Godina studija", "Predmet", "Ime saradnika", "Prezime saradnika", "Broj anketa"],
+      showData: 0
     }
   },
   computed: {
@@ -33,6 +34,9 @@ export default {
   },
 
   methods: {
+    handleSentData(data) {
+      this.subjectId = data;
+    },
     submitData(e) {
       e.preventDefault();
       if(this.studyProgramId !== "") {
@@ -48,7 +52,12 @@ export default {
           .then(data => {
             console.log(data);
             this.associateGradeData = data;
-
+            if(this.associateGradeData.length > 0) {
+              this.showData = 1;
+            }
+            else {
+              this.showData = 2;
+            }
           });
       }
 

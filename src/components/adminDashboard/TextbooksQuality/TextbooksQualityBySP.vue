@@ -1,28 +1,32 @@
 <template>
   <div>
-    <label for="">Odaberite studijski program: </label>
-    <select v-model="studyProgramId">
-      <option v-for="studyProgram in this.studyProgramsData" :value="studyProgram.id" :key="studyProgram.id">
-        {{studyProgram.name}}
-      </option>
-    </select>
-    <button @click="submitData">Pretraži</button>
+    <hr>
+    <div class="search-container">
+      <SurveyReportSelectMenu labelText="Odaberite studijski program" :data="studyProgramsData" @sendData="handleStudyProgram"/>
+      <SurveyReportSubmitButton @click="submitData"/>
+    </div>
+    <div v-if="showData === 1">
     <SurveyReportDataDisplay v-for="(textbooksQuality,i) in textbooksQualityData" :data="textbooksQuality" :dataLabels="dataLabels" :key="i" />
+    </div>
+    <div v-else-if="showData === 2">Trenutno nema podataka!</div>
   </div>
 </template>
 <script>
 import SurveyReportDataDisplay from "@/components/adminDashboard/SurveyReportDataDisplay.vue";
+import SurveyReportSelectMenu from "@/components/reports/SurveyReportSelectMenu.vue";
+import SurveyReportSubmitButton from "@/components/reports/SurveyReportSubmitButton.vue";
 
 export default {
   name: "TextbooksQualityBySP",
-  components: { SurveyReportDataDisplay },
+  components: { SurveyReportDataDisplay, SurveyReportSelectMenu, SurveyReportSubmitButton },
   props: ["data"],
   data() {
     return {
-      studyProgramsData: this.$store.state.studyProgramsData,
+      studyProgramsData: JSON.parse(localStorage.getItem("studyProgramsData")),
       studyProgramId: "",
       textbooksQualityData: {},
       dataLabels: ["Nivo dostupnosti neophodne literature", "Nivo pokrivenosti nastavnog programa datom literaturom", "Studijski program", "Godina studija", "Naziv predmeta", "Ime profesora", "Prezime profesora", "Ukupno anketa"],
+      showData: 0
     }
   },
   computed: {
@@ -32,6 +36,9 @@ export default {
   },
 
   methods: {
+    handleStudyProgram(data) {
+      this.studyProgramId = data;
+    },
     submitData(e) {
       e.preventDefault();
       if(this.studyProgramId !== "") {
@@ -47,6 +54,12 @@ export default {
           .then(data => {
             console.log(data);
             this.textbooksQualityData = data;
+            if(this.textbooksQualityData.length > 0) {
+              this.showData = 1;
+            }
+            else {
+              this.showData = 2;
+            }
           });
       }
 

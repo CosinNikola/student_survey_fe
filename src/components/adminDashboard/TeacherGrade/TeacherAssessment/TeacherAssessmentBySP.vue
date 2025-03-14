@@ -1,13 +1,10 @@
 <template>
-  <hr>
   <div>
-    <label for="">Odaberite studijski program: </label>
-    <select v-model="studyProgramId">
-      <option v-for="studyProgram in this.studyProgramsData" :value="studyProgram.id" :key="studyProgram.id">
-        {{studyProgram.name}}
-      </option>
-    </select>
-    <button @click="submitData">Pretraži</button>
+    <hr>
+    <div class="search-container">
+      <SurveyReportSelectMenu labelText="Odaberite studijski program" :data="studyProgramsData" @sendData="handleStudyProgram"/>
+      <SurveyReportSubmitButton @click="submitData"/>
+    </div>
     <div v-if="showData === 1">
     <SurveyReportDataDisplay v-for="(teacherGrade,i) in teacherGradeData" :data="teacherGrade" :dataLabels="dataLabels" :key="i" />
     </div>
@@ -16,14 +13,18 @@
 </template>
 <script>
 import SurveyReportDataDisplay from "@/components/adminDashboard/SurveyReportDataDisplay.vue";
+import SurveyReportSelectMenu from "@/components/reports/SurveyReportSelectMenu.vue";
+import SurveyReportSubmitButton from "@/components/reports/SurveyReportSubmitButton.vue";
+
+
 
 export default {
   name: "TeacherAssessmentBySP",
-  components: { SurveyReportDataDisplay },
+  components: { SurveyReportDataDisplay, SurveyReportSelectMenu, SurveyReportSubmitButton },
   props: ["data"],
   data() {
     return {
-      studyProgramsData: this.$store.state.studyProgramsData,
+      studyProgramsData: JSON.parse(localStorage.getItem("studyProgramsData")),
       studyProgramId: "",
       teacherGradeData: {},
       dataLabels: ["Nivo objektivnosti pri ocenjivanju", "Nastavnik objavljuje rezultate predispitnih aktivnosti", "Nivo javnosti ispita", "Studijski program", "Godina studija", "Predmet", "Ime profesora", "Prezime profesora", "Broj anketa"],
@@ -37,6 +38,9 @@ export default {
   },
 
   methods: {
+    handleStudyProgram(data) {
+      this.studyProgramId = data;
+    },
     submitData(e) {
       e.preventDefault();
       if(this.studyProgramId !== "") {

@@ -1,29 +1,33 @@
 <template>
-  <hr>
   <div>
-    <label for="">Odaberite studijski program: </label>
-    <select v-model="studyProgramId">
-      <option v-for="studyProgram in this.studyProgramsData" :value="studyProgram.id" :key="studyProgram.id">
-        {{studyProgram.name}}
-      </option>
-    </select>
-    <button @click="submitData">Pretraži</button>
+    <hr>
+    <div class="search-container">
+      <SurveyReportSelectMenu labelText="Odaberite studijski program" :data="studyProgramsData" @sendData="handleStudyProgram"/>
+      <SurveyReportSubmitButton @click="submitData"/>
+    </div>
+    <div v-if="showData === 1">
     <SurveyReportDataDisplay v-for="(associateGrade,i) in associateGradeData" :data="associateGrade" :dataLabels="dataLabels" :key="i" />
+    </div>
+    <div v-else-if="showData === 2">Trenutno nema podataka</div>
   </div>
 </template>
 <script>
 import SurveyReportDataDisplay from "@/components/adminDashboard/SurveyReportDataDisplay.vue";
+import SurveyReportSelectMenu from "@/components/reports/SurveyReportSelectMenu.vue";
+import SurveyReportSubmitButton from "@/components/reports/SurveyReportSubmitButton.vue";
+
 
 export default {
   name: "AssociateQualityBySP",
-  components: { SurveyReportDataDisplay },
+  components: { SurveyReportDataDisplay, SurveyReportSelectMenu, SurveyReportSubmitButton },
   props: ["data"],
   data() {
     return {
-      studyProgramsData: this.$store.state.studyProgramsData,
+      studyProgramsData: JSON.parse(localStorage.getItem("studyProgramsData")),
       studyProgramId: "",
       associateGradeData: {},
-      dataLabels: ["Jasno i razumljivo izlaganje", "Kvalitet primera", "Nastavnik odgovara na mejlove", "Korektan odnos", "Studijski program", "Godina studija", "Predmet", "Ime saradnika", "Prezime saradnika", "Broj anketa"]
+      dataLabels: ["Jasno i razumljivo izlaganje", "Kvalitet primera", "Nastavnik odgovara na mejlove", "Korektan odnos", "Studijski program", "Godina studija", "Predmet", "Ime saradnika", "Prezime saradnika", "Broj anketa"],
+      showData: 0
     }
   },
   computed: {
@@ -33,6 +37,9 @@ export default {
   },
 
   methods: {
+    handleStudyProgram(data) {
+      this.studyProgramId = data;
+    },
     submitData(e) {
       e.preventDefault();
       if(this.studyProgramId !== "") {
@@ -48,7 +55,12 @@ export default {
           .then(data => {
             console.log(data);
             this.associateGradeData = data;
-
+            if(this.associateGradeData.length > 0) {
+              this.showData = 1;
+            }
+            else {
+              this.showData = 2;
+            }
           });
       }
 

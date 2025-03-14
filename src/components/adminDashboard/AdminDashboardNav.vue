@@ -9,8 +9,20 @@
       </li>
       <li class="nav-item">
         <a class="nav-link">Nova anketa</a>
-      </li><li class="nav-item">
+      </li>
+      <li class="nav-item">
         <a class="nav-link">Korisnici</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link">Studijski programi</a>
+      </li><li class="nav-item">
+        <a class="nav-link">Predmeti</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link">Profesori</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link">Saradnici</a>
       </li>
     </ul>
   </div>
