@@ -1,5 +1,5 @@
 <template>
-  <SurveyContainer title="Ocena nastavnika: TITULA IME PREZIME">
+  <SurveyContainer :title="surveyTitle">
     <TeacherGradeForm type="teacher"/>
   </SurveyContainer>
 </template>
@@ -12,6 +12,17 @@ export default {
   components: {
     SurveyContainer,
     TeacherGradeForm
+  },
+  data() {
+    return {
+      teacherFirstName: JSON.parse(localStorage.getItem('subjectData'))[0].ime_profesora,
+      teacherLastName: JSON.parse(localStorage.getItem('subjectData'))[0].prezime_profesora,
+      teacherVocation: JSON.parse(localStorage.getItem('subjectData'))[0].titula_profesora,
+      surveyTitle: ""
+    }
+  },
+  beforeMount() {
+      this.surveyTitle = "Ocena profesora: " + this.teacherVocation + " " + this.teacherFirstName + " " + this.teacherLastName;
   }
 };
 </script>

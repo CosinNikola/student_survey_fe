@@ -29,26 +29,27 @@ export default {
           token: this.token
         };
         e.preventDefault();
-        fetch("http://127.0.0.1:8000/api/token-login", {
-          method: "PUT",
-          body: JSON.stringify(this.formData),
-          headers: {
-            "Content-Type": "application/json",
-            "mode": "no-cors",
-            "Access-Control-Allow-Origin": "*",
-          }
-        })
-          .then(res => {
-            if(res.status === 200){
-              this.$router.push("/general-data");
-            }
-            else if (res.status === 404 && this.formData.token === "") {
-              alert("Morate uneti token!");
-            }
-            else if (res.status === 404) {
-              alert("Nazalost, Vas token je istekao!");
-            }
-          })
+        // fetch("http://127.0.0.1:8000/api/token-login", {
+        //   method: "PUT",
+        //   body: JSON.stringify(this.formData),
+        //   headers: {
+        //     "Content-Type": "application/json",
+        //     "mode": "no-cors",
+        //     "Access-Control-Allow-Origin": "*",
+        //   }
+        // })
+        //   .then(res => {
+        //     if(res.status === 200){
+        //       this.$router.push("/general-data");
+        //     }
+        //     else if (res.status === 404 && this.formData.token === "") {
+        //       alert("Morate uneti token!");
+        //     }
+        //     else if (res.status === 404) {
+        //       alert("Nazalost, Vas token je istekao!");
+        //     }
+        //   })
+        this.$router.push('/general-data');
       }
   }
 }

@@ -1,5 +1,5 @@
 <template>
-  <SurveyContainer title="Ocena udzbenika i literature: NAZIV_PREDMETA">
+  <SurveyContainer :title="surveyTitle">
     <TextbooksQualityGradeForm />
   </SurveyContainer>
 </template>
@@ -12,7 +12,12 @@ export default {
   components: {
     SurveyContainer,
     TextbooksQualityGradeForm
-  }
+  },
+  data() {
+    return {
+      surveyTitle: "Ocena udzbenika i literature: " + JSON.parse(localStorage.getItem('subjectData'))[0].naziv_predmeta.toUpperCase(),
+    }
+  },
 };
 </script>
 

@@ -1,5 +1,5 @@
 <template>
-  <SurveyContainer title="Ocena plana rada za studijski program: NAZIV">
+  <SurveyContainer :title="surveyTitle">
     <WorkPlanRealizationForm />
   </SurveyContainer>
 </template>
@@ -12,6 +12,11 @@ export default {
   components: {
     SurveyContainer,
     WorkPlanRealizationForm
+  },
+  data() {
+    return {
+      surveyTitle: "Ocena plana rada za studijski program: " + JSON.parse(localStorage.getItem("studyProgramData"))[0].naziv_smera.toUpperCase(),
+    }
   }
 };
 </script>

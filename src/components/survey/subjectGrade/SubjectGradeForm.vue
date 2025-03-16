@@ -94,7 +94,7 @@ export default {
         {id: 5, labelText: "Ocena kvaliteta nastavnog materijala", name: "quality_of_materials"},
       ],
       previousFormData: {},
-      formDataLabel: "subjectGrade"
+      formDataLabel: "subjectGrade",
     }
   },
   beforeMount() {

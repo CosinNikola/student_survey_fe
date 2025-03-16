@@ -93,6 +93,7 @@ export default {
 
       console.log("Sending survey data:", this.formData);
       localStorage.setItem(this.formDataLabel, JSON.stringify(this.formData));
+      this.$router.push("/study-program-eval");
 
       // fetch("http://127.0.0.1:8000/api/general-data", {
       //   method: "POST",

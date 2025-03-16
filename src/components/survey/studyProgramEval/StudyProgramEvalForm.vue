@@ -1,7 +1,6 @@
 <template>
   <div>
     <div class="form-container">
-      {{currentRoute}}
       <form class="form">
         <SurveyFormGroup
           :options="options"
