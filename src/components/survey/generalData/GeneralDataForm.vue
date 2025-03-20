@@ -91,9 +91,16 @@ export default {
       //   study_program_by_year_id: sessionStorage.getItem("spyid"),
       // });
 
-      console.log("Sending survey data:", this.formData);
-      localStorage.setItem(this.formDataLabel, JSON.stringify(this.formData));
-      this.$router.push("/study-program-eval");
+      if(this.formData.gender && this.formData.status && this.formData.avg_grade && this.formData.class_attendance && this.formData.study_program_by_year_id) {
+        console.log("Sending survey data:", this.formData);
+        localStorage.setItem(this.formDataLabel, JSON.stringify(this.formData));
+        this.$router.push("/study-program-eval");
+      }
+      else {
+        alert("Morate popuniti sva polja!");
+      }
+
+
 
       // fetch("http://127.0.0.1:8000/api/general-data", {
       //   method: "POST",

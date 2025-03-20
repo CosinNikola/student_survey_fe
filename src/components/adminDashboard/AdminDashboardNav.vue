@@ -2,13 +2,10 @@
   <div class="container">
     <ul class="nav">
       <li class="nav-item">
-        <router-link  to="/admin-dashboard" class="nav-link">Pocetna</router-link>
+        <router-link class="nav-link" to="/admin-dashboard/survey-report" active-class="nav-link-active">Pregled anketa</router-link>
       </li>
       <li class="nav-item">
-        <router-link class="nav-link" to="/admin-dashboard/survey-report">Pregled anketa</router-link>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link">Nova anketa</a>
+        <router-link class="nav-link" to="/admin-dashboard/start-survey" active-class="nav-link-active">Nova anketa</router-link>
       </li>
       <li class="nav-item">
         <a class="nav-link">Korisnici</a>
@@ -66,6 +63,10 @@ body {
 .nav-link:hover {
   background-color: gray;
   cursor: pointer;
+}
+
+.nav-link-active {
+  background-color: gray;
 }
 
 </style>

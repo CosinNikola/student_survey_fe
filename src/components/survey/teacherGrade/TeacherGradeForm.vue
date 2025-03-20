@@ -37,7 +37,7 @@ export default {
           examples_quality: this.previousFormData.examples_quality,
           teacher_answers_email: this.previousFormData.teacher_answers_email,
           correct_relationship: this.previousFormData.correct_relationship,
-          subject: this.previousFormData.subject_study_program_id,
+          subject_study_program_id: this.previousFormData.subject_study_program_id,
         }
       }
       else {

@@ -49,9 +49,52 @@ export default {
     submitData(e) {
       e.preventDefault();
       console.log("Work plan grades:", this.formData);
+      this.workPlanRealization = this.formData;
       if(this.formData.plan_informing &&  this.formData.teaching_schedule && this.formData.consultation_schedule && this.formData.study_program_by_year_id) {
         localStorage.setItem(this.formDataLabel, JSON.stringify(this.formData));
-        this.$router.push('/subject-grade');
+        fetch("http://127.0.0.1:8000/api/general-data", {
+          method: "POST",
+          body: JSON.stringify(this.generalData),
+          headers: {
+            "Content-Type": "application/json",
+            "mode": "no-cors",
+            "Access-Control-Allow-Origin": "*",
+          }
+        })
+            .then(res => res.json())
+            .then(data => {
+              console.log(data);
+              fetch("http://127.0.0.1:8000/api/study-program-eval", {
+                method: "POST",
+                body: JSON.stringify(this.studyProgramEval),
+                headers: {
+                  "Content-Type": "application/json",
+                  "mode": "no-cors",
+                  "Access-Control-Allow-Origin": "*",
+                }
+              })
+                  .then(res => res.json())
+                  .then(data => {
+                    console.log(data);
+                    fetch("http://127.0.0.1:8000/api/work-plan-realization", {
+                      method: "POST",
+                      body: JSON.stringify(this.workPlanRealization),
+                      headers: {
+                        "Content-Type": "application/json",
+                        "mode": "no-cors",
+                        "Access-Control-Allow-Origin": "*",
+                      }
+                    })
+                        .then(res => res.json())
+                        .then(data => {
+                          console.log(data);
+                          this.$router.push("/survey-end");
+                          localStorage.setItem("generalData", JSON.stringify({}));
+                          localStorage.setItem("studyProgramEval", JSON.stringify({}));
+                          localStorage.setItem("workPlanRealization", JSON.stringify({}));
+                        });
+                  });
+                  });
       }
       else {
         alert('Morate popuniti sva polja!');
@@ -90,7 +133,10 @@ export default {
         {id: 2, labelText: "Ocena rasporeda konsultacija", name: "consultation_schedule"},
       ],
       previousFormData: {},
-      formDataLabel: "workPlanRealization"
+      formDataLabel: "workPlanRealization",
+      generalData: JSON.parse(localStorage.getItem("generalData")),
+      studyProgramEval: JSON.parse(localStorage.getItem("studyProgramEval")),
+      workPlanRealization: JSON.parse(localStorage.getItem("workPlanRealization")),
     }
   },
   beforeMount() {

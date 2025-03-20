@@ -53,7 +53,8 @@ export default {
       console.log("Study program eval:", this.formData);
       if(this.formData.structure && this.formData.knowledge_offering && this.formData.meets_expectations && this.formData.study_program_by_year_id) {
        localStorage.setItem(this.formDataLabel, JSON.stringify(this.formData));
-       this.$router.push('/work-plan-realization');
+        this.$store.commit("resetSurveyData");
+        this.$router.push("/work-plan-realization");
       }
       else {
         alert("Morate popuniti sva polja!");
@@ -73,7 +74,7 @@ export default {
       //   })
       //     this.$store.commit("saveSurveyData", this.formData);
       //     this.$store.commit("saveSurveyName", "study-program-eval");
-          this.$store.commit("resetSurveyData");
+
 
     }
   },
@@ -95,7 +96,8 @@ export default {
 
       previousFormData: {},
 
-      formDataLabel: "studyProgramEval"
+      formDataLabel: "studyProgramEval",
+
     }
   },
   beforeMount() {

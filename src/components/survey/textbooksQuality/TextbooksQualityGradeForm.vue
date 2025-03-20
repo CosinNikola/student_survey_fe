@@ -47,49 +47,15 @@ export default {
       console.log("Textbooks grades:", this.formData);
       if(this.formData.availibility && this.formData.coverage && this.formData.subject_study_program_id) {
       localStorage.setItem(this.formDataLabel, JSON.stringify(this.formData));
-      this.$router.push("/survey-end");this.textbooksQualityGrade = JSON.parse(localStorage.getItem("textbooksQualityGrade"));
+      this.$router.push("/survey-end");
+      this.textbooksQualityGrade = JSON.parse(localStorage.getItem("textbooksQualityGrade"));
       }
       else {
         alert('Morate popuniti sva polja!');
       }
-      if(this.generalData && this.studyProgramEval && this.workPlanRealization && this.subjectGrade && this.teacherQuality && this.teacherAssessment && this.associateQuality && this.associateAssessment && this.textbooksQualityGrade)
+      if(this.subjectGrade && this.teacherQuality && this.teacherAssessment && this.associateQuality && this.associateAssessment && this.textbooksQualityGrade)
       {
-        fetch("http://127.0.0.1:8000/api/general-data", {
-          method: "POST",
-          body: JSON.stringify(this.generalData),
-          headers: {
-            "Content-Type": "application/json",
-            "mode": "no-cors",
-            "Access-Control-Allow-Origin": "*",
-          }
-        })
-          .then(res => res.json())
-          .then(data => {
-            console.log(data);
-            fetch("http://127.0.0.1:8000/api/study-program-eval", {
-              method: "POST",
-              body: JSON.stringify(this.studyProgramEval),
-              headers: {
-                "Content-Type": "application/json",
-                "mode": "no-cors",
-                "Access-Control-Allow-Origin": "*",
-              }
-            })
-              .then(res => res.json())
-              .then(data => {
-                console.log(data);
-                fetch("http://127.0.0.1:8000/api/work-plan-realization", {
-                  method: "POST",
-                  body: JSON.stringify(this.workPlanRealization),
-                  headers: {
-                    "Content-Type": "application/json",
-                    "mode": "no-cors",
-                    "Access-Control-Allow-Origin": "*",
-                  }
-                })
-                  .then(res => res.json())
-                  .then(data => {
-                    console.log(data);
+
                     fetch("http://127.0.0.1:8000/api/subject-grade", {
                       method: "POST",
                       body: JSON.stringify(this.subjectGrade),
@@ -170,9 +136,6 @@ export default {
                               })
                           });
                       });
-                  });
-              });
-          });
       }
       else {
         console.error("Survey unsuccessful!");
@@ -194,8 +157,6 @@ export default {
       ],
       previousFormData: {},
       formDataLabel: "textbooksQualityGrade",
-      generalData: JSON.parse(localStorage.getItem("generalData")),
-      studyProgramEval: JSON.parse(localStorage.getItem("studyProgramEval")),
       workPlanRealization: JSON.parse(localStorage.getItem("workPlanRealization")),
       subjectGrade: JSON.parse(localStorage.getItem("subjectGrade")),
       teacherQuality: JSON.parse(localStorage.getItem("teacherQuality")),

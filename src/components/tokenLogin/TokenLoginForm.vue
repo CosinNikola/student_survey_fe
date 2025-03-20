@@ -15,6 +15,8 @@
 export default {
     name: "TokenLoginForm",
   components: { },
+  props: ["survey"],
+
   data() {
       return {
         token: "",
@@ -49,7 +51,13 @@ export default {
         //       alert("Nazalost, Vas token je istekao!");
         //     }
         //   })
-        this.$router.push('/general-data');
+
+        if(this.survey === "general") {
+          this.$router.push('/general-data');
+        }
+        else if(this.survey === "subject") {
+          this.$router.push('/subject-grade');
+        }
       }
   }
 }

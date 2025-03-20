@@ -1,13 +1,13 @@
 <template>
-    <div>
-        <TokenLoginForm survey="subject"/>
-    </div>
+  <div>
+    <TokenLoginForm survey="general"/>
+  </div>
 </template>
 <script>
 import TokenLoginForm from '@/components/tokenLogin/TokenLoginForm.vue';
 
 export default {
-  name: "TokenLoginView",
+  name: "TokenLoginGeneralView",
   components: {
     TokenLoginForm,
   },
@@ -30,10 +30,10 @@ export default {
         "Access-Control-Allow-Origin": "*",
       }
     })
-      .then(res => res.json())
-      .then(data => {
-        localStorage.setItem('subjectData', JSON.stringify(data));
-      })
+        .then(res => res.json())
+        .then(data => {
+          localStorage.setItem('subjectData', JSON.stringify(data));
+        })
     fetch('http://127.0.0.1:8000/api/study-program/' + sessionStorage.getItem('spyid'), {
       method: 'GET',
       headers: {
@@ -42,19 +42,19 @@ export default {
         "Access-Control-Allow-Origin": "*",
       }
     })
-      .then(res => res.json())
-      .then(data => {
-        localStorage.setItem('studyProgramData', JSON.stringify(data));
-      })
+        .then(res => res.json())
+        .then(data => {
+          localStorage.setItem('studyProgramData', JSON.stringify(data));
+        })
   }
 };
 </script>
 <style scoped>
-    div {
-      display: flex;
-      flex-direction: row;
-      align-items: center;
-      justify-content: center;
-      height: 80vh;
-    }
+div {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  height: 80vh;
+}
 </style>

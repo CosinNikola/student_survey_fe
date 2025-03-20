@@ -70,6 +70,10 @@ import TextbooksQualityBySP from "@/components/adminDashboard/TextbooksQuality/T
 import TextbooksQualityBySPYear from "@/components/adminDashboard/TextbooksQuality/TextbooksQualityBySPYear.vue";
 import TextbooksQualityBySubject from "@/components/adminDashboard/TextbooksQuality/TextbooksQualityBySubject.vue";
 import TextbooksQualityByTeacher from "@/components/adminDashboard/TextbooksQuality/TextbooksQualityByTeacher.vue";
+import StartGeneralSurveyView from "@/views/StartGeneralSurveyView.vue";
+import TokenLoginGeneralView from "@/views/TokenLoginGeneralView.vue";
+import StartSurvey from "@/components/adminDashboard/StartSurvey/StartSurvey.vue";
+import GeneralSurveyStart from "@/components/adminDashboard/StartSurvey/GeneralSurveyStart.vue";
 
 
 const routes = [
@@ -93,9 +97,19 @@ const routes = [
     component: StartSurveyView,
   },
   {
+    path: '/start-general-survey/:spyid',
+    name: "start-general-survey",
+    component: StartGeneralSurveyView,
+  },
+  {
     path: "/token-login",
     name: "token-login",
     component: TokenLoginView,
+  },
+  {
+    path: "/token-login-general",
+    name: "token-login-general",
+    component: TokenLoginGeneralView,
   },
   {
     path: "/login",
@@ -308,6 +322,16 @@ const routes = [
             ]
           },
 
+        ]
+      },
+      {
+        path: "start-survey",
+        component: StartSurvey,
+        children: [
+          {
+            path: "general",
+            component: GeneralSurveyStart
+          }
         ]
       }
 
