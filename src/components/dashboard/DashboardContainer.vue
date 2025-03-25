@@ -18,9 +18,10 @@ export default {
     border-radius: 15px;
     box-shadow: 2px 2px 8px gray;
     width: 88vw;
-    height: 96vh;
+    min-height: 96vh;
     margin-top: 15px;
     margin-left: 15px;
     align-items: start;
+    padding-bottom: 30px;
   }
 </style>

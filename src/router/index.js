@@ -74,6 +74,8 @@ import StartGeneralSurveyView from "@/views/StartGeneralSurveyView.vue";
 import TokenLoginGeneralView from "@/views/TokenLoginGeneralView.vue";
 import StartSurvey from "@/components/adminDashboard/StartSurvey/StartSurvey.vue";
 import GeneralSurveyStart from "@/components/adminDashboard/StartSurvey/GeneralSurveyStart.vue";
+import SubjectSurveyStart from "@/components/adminDashboard/StartSurvey/SubjectSurveyStart.vue";
+import TokensTable from "@/components/adminDashboard/StartSurvey/TokensTable.vue";
 
 
 const routes = [
@@ -331,7 +333,14 @@ const routes = [
           {
             path: "general",
             component: GeneralSurveyStart
-          }
+          },
+          {
+            path: "subject",
+            component: SubjectSurveyStart
+          },{
+            path: "tokens-table",
+            component: TokensTable
+          },
         ]
       }
 

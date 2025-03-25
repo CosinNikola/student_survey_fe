@@ -42,7 +42,7 @@ body {
   width: 10%;
   background-color: rgb(50,50,50);
   color: white;
-  height: 100vh;
+  min-height: 100vh;
 
 }
 .nav {

@@ -1,5 +1,5 @@
 <template>
-  <button @click="submitData">Pretraži</button>
+  <button @click="submitData"><slot/></button>
 </template>
 <script>
 export default {

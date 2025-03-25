@@ -12,8 +12,12 @@ export default {
           Opšta anketa
         </router-link>
       </li> <li class="search-nav__item">
-      <router-link class="search-nav__link" to="/admin-dashboard/survey-report/study-program-eval">
+      <router-link class="search-nav__link" to="/admin-dashboard/start-survey/subject">
         Anketa po predmetu
+      </router-link>
+    </li><li class="search-nav__item">
+      <router-link class="search-nav__link" to="/admin-dashboard/start-survey/tokens-table">
+        Tabela sa tokenima
       </router-link>
     </li>
     </ul>
