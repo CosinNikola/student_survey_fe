@@ -1,5 +1,5 @@
 <template>
-  <button :class="(type === 'success') ? 'btn-success' : (type === 'error') ? 'btn-error' : ''"><slot/></button>
+  <button :class="(type === 'success') ? 'btn-success' : (type === 'error') ? 'btn-error' : (type === 'edit') ? 'btn-edit' : ''"><slot/></button>
 </template>
 <script>
 export default {
@@ -36,5 +36,12 @@ button:hover {
 }
 .btn-error:hover {
   background-color: red;
+}
+
+.btn-edit {
+  background-color: darkorange;
+}
+.btn-edit:hover {
+  background-color: coral;
 }
 </style>

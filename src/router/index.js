@@ -76,6 +76,10 @@ import StartSurvey from "@/components/adminDashboard/StartSurvey/StartSurvey.vue
 import GeneralSurveyStart from "@/components/adminDashboard/StartSurvey/GeneralSurveyStart.vue";
 import SubjectSurveyStart from "@/components/adminDashboard/StartSurvey/SubjectSurveyStart.vue";
 import TokensTable from "@/components/adminDashboard/StartSurvey/TokensTable.vue";
+import UsersManagement from "@/components/adminDashboard/Users/UsersManagement.vue";
+import AllUsers from "@/components/adminDashboard/Users/AllUsers.vue";
+import StudyProgramsManagement from "@/components/adminDashboard/StudyProgramsManagement/StudyProgramsManagement.vue";
+import AllStudyPrograms from "@/components/adminDashboard/StudyProgramsManagement/AllStudyPrograms.vue";
 
 
 const routes = [
@@ -341,6 +345,26 @@ const routes = [
             path: "tokens-table",
             component: TokensTable
           },
+        ]
+      },
+      {
+        path: "users",
+        component: UsersManagement,
+        children: [
+          {
+            path: "all-users",
+            component: AllUsers
+          }
+        ]
+      },
+      {
+        path: "study-programs",
+        component: StudyProgramsManagement,
+        children: [
+          {
+            path: "all-study-programs",
+            component: AllStudyPrograms
+          }
         ]
       }
 

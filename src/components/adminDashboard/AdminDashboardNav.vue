@@ -8,10 +8,10 @@
         <router-link class="nav-link" to="/admin-dashboard/start-survey" active-class="nav-link-active">Nova anketa</router-link>
       </li>
       <li class="nav-item">
-        <a class="nav-link">Korisnici</a>
+        <router-link class="nav-link" to="/admin-dashboard/users" active-class="nav-link-active">Korisnici</router-link>
       </li>
       <li class="nav-item">
-        <a class="nav-link">Studijski programi</a>
+        <router-link class="nav-link" to="/admin-dashboard/study-programs" active-class="nav-link-active">Studijski programi</router-link>
       </li><li class="nav-item">
         <a class="nav-link">Predmeti</a>
       </li>
