@@ -80,6 +80,7 @@ import UsersManagement from "@/components/adminDashboard/Users/UsersManagement.v
 import AllUsers from "@/components/adminDashboard/Users/AllUsers.vue";
 import StudyProgramsManagement from "@/components/adminDashboard/StudyProgramsManagement/StudyProgramsManagement.vue";
 import AllStudyPrograms from "@/components/adminDashboard/StudyProgramsManagement/AllStudyPrograms.vue";
+import StudyProgramEdit from "@/components/adminDashboard/StudyProgramsManagement/StudyProgramEdit.vue";
 
 
 const routes = [
@@ -363,7 +364,13 @@ const routes = [
         children: [
           {
             path: "all-study-programs",
-            component: AllStudyPrograms
+            component: AllStudyPrograms,
+            children: [
+              {
+                path: "edit",
+                component: StudyProgramEdit
+              },
+            ]
           }
         ]
       }
