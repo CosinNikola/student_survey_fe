@@ -1,7 +1,6 @@
 <template>
   <StudyProgramsManagementNav></StudyProgramsManagementNav>
   <div class="display">
-    <h1>Studijski programi</h1>
     <router-view/>
   </div>
 </template>

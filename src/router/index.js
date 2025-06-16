@@ -81,6 +81,7 @@ import AllUsers from "@/components/adminDashboard/Users/AllUsers.vue";
 import StudyProgramsManagement from "@/components/adminDashboard/StudyProgramsManagement/StudyProgramsManagement.vue";
 import AllStudyPrograms from "@/components/adminDashboard/StudyProgramsManagement/AllStudyPrograms.vue";
 import StudyProgramEdit from "@/components/adminDashboard/StudyProgramsManagement/StudyProgramEdit.vue";
+import StudyProgramsByYear from "@/components/adminDashboard/StudyProgramsManagement/StudyProgramsByYear.vue";
 
 
 const routes = [
@@ -371,6 +372,10 @@ const routes = [
                 component: StudyProgramEdit
               },
             ]
+          },
+          {
+            path: "by-year",
+            component: StudyProgramsByYear
           }
         ]
       }

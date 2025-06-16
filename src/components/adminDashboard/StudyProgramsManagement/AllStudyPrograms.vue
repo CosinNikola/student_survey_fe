@@ -1,5 +1,6 @@
 <template>
   <div>
+    <h1>Studijski programi</h1>
     <table>
       <tr>
         <th>Rbr.</th>
