@@ -80,8 +80,10 @@ import UsersManagement from "@/components/adminDashboard/Users/UsersManagement.v
 import AllUsers from "@/components/adminDashboard/Users/AllUsers.vue";
 import StudyProgramsManagement from "@/components/adminDashboard/StudyProgramsManagement/StudyProgramsManagement.vue";
 import AllStudyPrograms from "@/components/adminDashboard/StudyProgramsManagement/AllStudyPrograms.vue";
-import StudyProgramEdit from "@/components/adminDashboard/StudyProgramsManagement/StudyProgramEdit.vue";
 import StudyProgramsByYear from "@/components/adminDashboard/StudyProgramsManagement/StudyProgramsByYear.vue";
+import SubjectsManagement from "@/components/adminDashboard/SubjectsManagement/SubjectsManagement.vue";
+import AllSubjects from "@/components/adminDashboard/SubjectsManagement/AllSubjects.vue";
+import SubjectsByYear from "@/components/adminDashboard/SubjectsManagement/SubjectsByYear.vue";
 
 
 const routes = [
@@ -366,16 +368,24 @@ const routes = [
           {
             path: "all-study-programs",
             component: AllStudyPrograms,
-            children: [
-              {
-                path: "edit",
-                component: StudyProgramEdit
-              },
-            ]
-          },
+            },
           {
             path: "by-year",
             component: StudyProgramsByYear
+          }
+        ]
+      },
+      {
+        path: "subjects",
+        component: SubjectsManagement,
+        children: [
+          {
+            path: "all-subjects",
+            component: AllSubjects
+          },
+          {
+            path: "by-year",
+            component: SubjectsByYear
           }
         ]
       }

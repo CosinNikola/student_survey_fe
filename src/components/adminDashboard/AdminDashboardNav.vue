@@ -13,7 +13,7 @@
       <li class="nav-item">
         <router-link class="nav-link" to="/admin-dashboard/study-programs" active-class="nav-link-active">Studijski programi</router-link>
       </li><li class="nav-item">
-        <a class="nav-link">Predmeti</a>
+      <router-link class="nav-link" to="/admin-dashboard/subjects" active-class="nav-link-active">Predmeti</router-link>
       </li>
       <li class="nav-item">
         <a class="nav-link">Profesori</a>

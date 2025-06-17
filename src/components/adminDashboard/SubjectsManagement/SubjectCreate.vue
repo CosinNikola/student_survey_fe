@@ -1,30 +1,30 @@
 <template>
   <div class="form-page">
-      <h1>Kreiraj novi studijski program</h1>
-  <form>
-    <div class="form-group">
-    <label class="form-label">Naziv</label>
-    <input type="text" class="form-input" v-model="studyProgramName">
-    </div>
-    <div class="form-group">
-      <label class="form-label">Akronim</label>
-      <input type="text" class="form-input" v-model="studyProgramAbbr">
-    </div>
-    <DashboardButton type="success" @click="(e) => {formSubmit(e)}">Potvrdi</DashboardButton>
-  </form>
+    <h1>Kreiraj novi predmet</h1>
+    <form>
+      <div class="form-group">
+        <label class="form-label">Naziv</label>
+        <input type="text" class="form-input" v-model="subjectName">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Akronim</label>
+        <input type="text" class="form-input" v-model="subjectAbbr">
+      </div>
+      <DashboardButton type="success" @click="(e) => {formSubmit(e)}">Potvrdi</DashboardButton>
+    </form>
     <p v-if="errorMessageToggle" class="errorMsgDisplay">{{ errorMessage }}</p>
   </div>
 </template>
 <script>
 import DashboardButton from "@/components/adminDashboard/DashboardButton.vue";
+
 export default {
-  name: "StudyProgramCreate",
+  name: "SubjectCreate",
   components: {DashboardButton},
   data() {
     return {
-      studyProgramName: "",
-      studyProgramAbbr: "",
-      formData: {},
+      subjectName: "",
+      subjectAbbr: "",
       errorMessage: "",
       errorMessageToggle: false,
     }
@@ -32,15 +32,15 @@ export default {
   methods: {
     formSubmit(e) {
       e.preventDefault();
-      if(this.studyProgramName === "" || this.studyProgramAbbr === "") {
+      if(this.subjectName === "" || this.subjectAbbr === "") {
         alert("Sva polja moraju biti popunjena!");
       }
       else {
         this.formData = {
-          name: this.studyProgramName,
-          abbr: this.studyProgramAbbr
+          name: this.subjectName,
+          abbr: this.subjectAbbr
         };
-        fetch("http://127.0.0.1:8000/api/study-programs", {
+        fetch("http://127.0.0.1:8000/api/subjects", {
           method: "POST",
           body: JSON.stringify(this.formData),
           headers: {
@@ -54,16 +54,13 @@ export default {
                 location.reload();
               }
               else {
-                this.errorMessage = "Greska pri kreiranju studijskog programa!";
+                this.errorMessage = "Greska pri kreiranju predmeta!";
                 this.errorMessageToggle = true;
               }
             })
       }
-
     }
   }
-
-
 }
 </script>
 
