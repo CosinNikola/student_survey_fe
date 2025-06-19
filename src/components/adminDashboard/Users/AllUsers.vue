@@ -12,21 +12,27 @@
         <td>{{ user.name }}</td>
         <td> {{ user.email }}</td>
         <td> {{ (user.role_id === 1) ? "Administrator" : "Profesor"}}</td>
-        <td><DashboardButton type="error" @click="this.deleteUser(user.id)">Obriši korisnika</DashboardButton></td>
         <td><DashboardButton type="edit">Izmeni korisnika</DashboardButton></td>
+        <td><DashboardButton type="error" v-if="!user.isFk" @click="this.deleteUser(user.id)">Obriši korisnika</DashboardButton></td>
       </tr>
     </table>
+    <DashboardButton class="w-150" @click="() => {
+      this.createFormVisible = !this.createFormVisible;
+    }">Kreiraj novog</DashboardButton>
+    <UserCreate v-if="this.createFormVisible"/>
   </div>
 </template>
 <script>
 import DashboardButton from "@/components/adminDashboard/DashboardButton.vue";
+import UserCreate from "@/components/adminDashboard/Users/UserCreate.vue";
 
 export default {
   name: "AllUsers",
-  components: {DashboardButton},
+  components: {DashboardButton, UserCreate},
   data() {
     return {
-      usersData: []
+      usersData: [],
+      createFormVisible: false
     }
   },
   methods: {
@@ -76,5 +82,9 @@ td {
   max-width: 200px;
   text-align: center;
   overflow: auto;
+}
+.w-150 {
+  width: 150px;
+  margin-top: 20px;
 }
 </style>
