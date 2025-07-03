@@ -16,10 +16,10 @@
       <router-link class="nav-link" to="/admin-dashboard/subjects" active-class="nav-link-active">Predmeti</router-link>
       </li>
       <li class="nav-item">
-        <a class="nav-link">Profesori</a>
+        <router-link class="nav-link" to="/admin-dashboard/teachers" active-class="nav-link-active">Profesori</router-link>
       </li>
       <li class="nav-item">
-        <a class="nav-link">Saradnici</a>
+        <router-link class="nav-link" to="/admin-dashboard/associates" active-class="nav-link-active">Saradnici</router-link>
       </li>
     </ul>
   </div>

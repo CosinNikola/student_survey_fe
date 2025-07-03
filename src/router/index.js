@@ -84,6 +84,12 @@ import StudyProgramsByYear from "@/components/adminDashboard/StudyProgramsManage
 import SubjectsManagement from "@/components/adminDashboard/SubjectsManagement/SubjectsManagement.vue";
 import AllSubjects from "@/components/adminDashboard/SubjectsManagement/AllSubjects.vue";
 import SubjectsByYear from "@/components/adminDashboard/SubjectsManagement/SubjectsByYear.vue";
+import TeachersManagement from "@/components/adminDashboard/TeachersManagement/TeachersManagement.vue";
+import AllTeachers from "@/components/adminDashboard/TeachersManagement/AllTeachers.vue";
+import TeacherBySubject from "@/components/adminDashboard/TeachersManagement/TeacherBySubject.vue";
+import AssociatesManagement from "@/components/adminDashboard/AssociatesManagement/AssociatesManagement.vue";
+import AllAssociates from "@/components/adminDashboard/AssociatesManagement/AllAssociates.vue";
+import AssociateBySubject from "@/components/adminDashboard/AssociatesManagement/AssociateBySubject.vue";
 
 
 const routes = [
@@ -388,7 +394,33 @@ const routes = [
             component: SubjectsByYear
           }
         ]
-      }
+      },   {
+        path: "teachers",
+        component: TeachersManagement,
+        children: [
+          {
+            path: "all-teachers",
+            component: AllTeachers
+          },
+          {
+            path: "by-subject",
+            component: TeacherBySubject
+          }
+        ]
+      }, {
+        path: "associates",
+        component: AssociatesManagement,
+        children: [
+          {
+            path: "all-associates",
+            component: AllAssociates
+          },
+          {
+            path: "by-subject",
+            component: AssociateBySubject
+          }
+        ]
+      },
 
     ]
   },{

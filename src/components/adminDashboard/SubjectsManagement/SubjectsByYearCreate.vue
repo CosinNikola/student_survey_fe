@@ -16,18 +16,6 @@
           <option v-for="subject of this.subjectsData" :key="subject.id" :value="subject.id">{{ subject.name }}</option>
         </select>
       </div>
-<!--      <div class="form-group">-->
-<!--        <label class="form-label">Godina studija </label>-->
-<!--        <select name="" id="">-->
-<!--          <option value="1">1</option>-->
-<!--          <option value="2">2</option>-->
-<!--          <option value="3">3</option>-->
-<!--        </select>-->
-<!--      </div>-->
-<!--      <div class="form-group">-->
-<!--        <label class="form-label">Broj studenata</label>-->
-<!--        <input type="text" class="form-input" >-->
-<!--      </div>-->
      <DashboardButton type="success" @click="(e) => {formSubmit(e)}">Potvrdi</DashboardButton>
     </form>
     <p class="errorMsgDisplay" v-if="this.errorMessageToggle">{{ this.errorMessage }}</p>

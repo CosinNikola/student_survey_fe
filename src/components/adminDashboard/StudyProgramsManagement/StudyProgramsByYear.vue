@@ -23,20 +23,23 @@
       this.createFormVisible = !this.createFormVisible;
     }">Kreiraj novi</DashboardButton>
   <StudyProgramByYearCreate v-if="createFormVisible" :data = "studyProgramsByYearData"/>
+    <StudyProgramByYearEdit v-if="editFormVisible" />
   </div>
 </template>
 
 <script>
 import DashboardButton from "@/components/adminDashboard/DashboardButton.vue";
 import StudyProgramByYearCreate from "@/components/adminDashboard/StudyProgramsManagement/StudyProgramByYearCreate.vue";
+import StudyProgramByYearEdit from "@/components/adminDashboard/StudyProgramsManagement/StudyProgramByYearEdit.vue";
 
 export default {
   name: "StudyProgramsByYear",
-  components: {StudyProgramByYearCreate, DashboardButton},
+  components: {StudyProgramByYearEdit, StudyProgramByYearCreate, DashboardButton},
   data() {
     return {
       studyProgramsByYearData: [],
       createFormVisible: false,
+      editFormVisible: false
     }
   },
   mounted() {
@@ -69,6 +72,10 @@ export default {
               window.location.reload();
             })
       }
+    },
+    editButtonClick(studyProgram) {
+      console.log(studyProgram);
+      this.editFormVisible = !this.editFormVisible;
     }
   }
 }

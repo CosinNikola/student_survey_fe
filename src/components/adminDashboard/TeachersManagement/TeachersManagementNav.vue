@@ -1,20 +1,25 @@
-<script>
-export default {
-  name: "UsersManagementNav"
-};
-</script>
-
 <template>
   <div class="search-nav">
     <ul class="search-nav__list">
       <li class="search-nav__item">
-        <router-link class="search-nav__link" to="/admin-dashboard/users/all-users">
-          Prikaz korisnika
+        <router-link class="search-nav__link" to="/admin-dashboard/teachers/all-teachers">
+          Profesori
         </router-link>
       </li>
-      </ul>
+      <li class="search-nav__item">
+        <router-link class="search-nav__link" to="/admin-dashboard/teachers/by-subject">
+          Profesori po predmetu
+        </router-link>
+      </li>
+    </ul>
   </div>
 </template>
+<script>
+export default {
+  name: "TeachersManagementNav"
+}
+</script>
+
 
 <style scoped>
 .search-nav {
