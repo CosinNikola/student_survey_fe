@@ -1,42 +1,32 @@
 <template>
   <div class="form-page">
-    <h1>Kreiraj novog korisnika</h1>
+    <h1>Promena lozinke: {{ this.userName }}</h1>
     <form>
-      <div class="form-group">
-        <label class="form-label">Ime</label>
-        <input type="text" class="form-input" v-model="this.userName">
-      </div>
-      <div class="form-group">
-        <label class="form-label">Email</label>
-        <input type="text" class="form-input" v-model="this.userEmail">
-      </div>
-      <div class="form-group">
-        <label class="form-label">Uloga</label>
-        <select name="" id="" v-model="this.userRoleId">
-          <option value="1">Administrator</option>
-          <option value="2">Profesor</option>
-        </select>
-      </div>
+    <div class="form-group">
+      <label class="form-label">Nova lozinka</label>
+      <input type="password" class="form-input" v-model="this.formData.password">
+    </div><div class="form-group">
+    <label class="form-label">Potvrda lozinke</label>
+    <input type="password" class="form-input" v-model="this.formData.password_confirmation">
+  </div>
       <DashboardButton type="success" @click="(e) => {formSubmit(e)}">Potvrdi</DashboardButton>
     </form>
-    <p v-if="errorMessageToggle" class="errorMsgDisplay">{{ errorMessage }}</p>
+    <p v-if="this.errorMessageToggle" class="errorMsgDisplay">{{ errorMessage }}</p>
   </div>
 </template>
-
 <script>
 import DashboardButton from "@/components/adminDashboard/DashboardButton.vue";
 
 export default {
-  name: "UserEdit",
+  name: "PasswordChange",
   components: {DashboardButton},
-  props: ['id','name', 'email', 'roleId'],
+  props: ['userId', 'userName'],
   data() {
     return {
-      formData: {},
-      userId: this.id,
-      userName: this.name,
-      userEmail: this.email,
-      userRoleId: this.roleId,
+      formData: {
+        password: "",
+        password_confirmation: "",
+      },
       errorMessageToggle: false,
       errorMessage: ""
     }
@@ -44,12 +34,15 @@ export default {
   methods: {
     formSubmit(e) {
       e.preventDefault();
-      this.formData = {
-        name: this.userName,
-        email: this.userEmail,
-        role_id: this.userRoleId
-      };
-      fetch("http://127.0.0.1:8000/api/users/" + this.userId, {
+      if(this.formData.password === "" || this.formData.password_confirmation === "") {
+        this.errorMessageToggle = true;
+        this.errorMessage = "Sva polja moraju biti popunjena!";
+      }
+      else {
+
+
+      if(this.formData.password === this.formData.password_confirmation) {
+      fetch("http://127.0.0.1:8000/api/pw-change/" + this.userId, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -62,9 +55,14 @@ export default {
           .then(() => {
             window.location.reload();
           })
+      }
+      else {
+        this.errorMessageToggle = true;
+        this.errorMessage = "Lozinke se ne podudaraju!";
+      }
+      }
     }
   }
-
 }
 </script>
 
@@ -93,7 +91,7 @@ export default {
   padding: 20px;
   margin-top: 10px;
   box-shadow: 2px 2px 2px gray;
-  width: 500px;
+  width: 600px;
 }
 
 .form-page h1 {
