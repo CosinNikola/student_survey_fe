@@ -11,10 +11,19 @@ export default {
   components: { SearchNavSPOnly },
   data() {
     return {
-      routes: [
-        '/admin-dashboard/survey-report/work-plan-realization/by-study-program',
-        '/admin-dashboard/survey-report/work-plan-realization/by-study-program-and-year'
-      ]
+      roleId: JSON.parse(localStorage.getItem("userData")).role_id,
+    }
+  },
+  computed: {
+    routes() {
+      return this.roleId === 1 ? [
+            '/admin-dashboard/survey-report/study-program-eval/by-study-program',
+            '/admin-dashboard/survey-report/study-program-eval/by-study-program-and-year'
+          ] :
+          [
+            '/teacher-dashboard/survey-report/study-program-eval/by-study-program',
+            '/teacher-dashboard/survey-report/study-program-eval/by-study-program-and-year'
+          ]
     }
   }
 };

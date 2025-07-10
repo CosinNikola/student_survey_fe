@@ -1,14 +1,13 @@
 <template>
   <h1>Pregled anketa o saradniku</h1>
-  <!--  <SearchNav :routes="routes" />-->
   <hr>
   <div class="nav">
     <ul class="nav-list">
       <li class="nav-item">
-        <router-link to="/admin-dashboard/survey-report/associate-grade/quality" class="nav-link" active-class="nav-link-active">Kvalitet nastavnika</router-link>
+        <router-link :to="`/${this.urlPrefix}/survey-report/associate-grade/quality`" class="nav-link" active-class="nav-link-active">Kvalitet nastavnika</router-link>
       </li>
       <li class="nav-item">
-        <router-link to="/admin-dashboard/survey-report/associate-grade/assessment" class="nav-link"  active-class="nav-link-active">Ocenjivanje nastavnika</router-link>
+        <router-link :to="`/${this.urlPrefix}/survey-report/associate-grade/assessment`" class="nav-link"  active-class="nav-link-active">Ocenjivanje nastavnika</router-link>
       </li>
     </ul>
   </div>
@@ -16,19 +15,19 @@
 </template>
 
 <script>
-// import SearchNav from "@/components/adminDashboard/SearchNav.vue";
+
 
 export default {
   name: "AssociateGradeReport",
   components: {  },
   data() {
     return {
-      routes: [
-        '/admin-dashboard/survey-report/associate-grade/by-study-program',
-        '/admin-dashboard/survey-report/associate-grade/by-study-program-and-year',
-        '/admin-dashboard/survey-report/associate-grade/by-subject',
-        '/admin-dashboard/survey-report/associate-grade/by-associate',
-      ]
+      roleId: JSON.parse(localStorage.getItem("userData")).role_id,
+      }
+  },
+  computed: {
+    urlPrefix() {
+      return this.roleId === 1 ? 'admin-dashboard' : 'teacher-dashboard';
     }
   }
 };

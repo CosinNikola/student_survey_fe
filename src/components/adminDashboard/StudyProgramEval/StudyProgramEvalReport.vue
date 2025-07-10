@@ -11,10 +11,20 @@ export default {
   components: { SurveyReportsNavSPOnly: SearchNavSpOnly },
   data() {
     return {
-      routes: [
+      roleId: JSON.parse(localStorage.getItem("userData")).role_id,
+
+    }
+  },
+  computed: {
+    routes() {
+      return this.roleId === 1 ? [
         '/admin-dashboard/survey-report/study-program-eval/by-study-program',
         '/admin-dashboard/survey-report/study-program-eval/by-study-program-and-year'
-      ]
+      ] :
+          [
+            '/teacher-dashboard/survey-report/study-program-eval/by-study-program',
+            '/teacher-dashboard/survey-report/study-program-eval/by-study-program-and-year'
+          ]
     }
   }
 };

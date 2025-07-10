@@ -11,12 +11,24 @@ export default {
   components: { SearchNav },
   data() {
     return {
-      routes: [
-        '/admin-dashboard/survey-report/subject-grade/by-study-program',
-        '/admin-dashboard/survey-report/subject-grade/by-study-program-and-year',
-        '/admin-dashboard/survey-report/subject-grade/by-subject',
-        '/admin-dashboard/survey-report/subject-grade/by-teacher',
-      ]
+      roleId: JSON.parse(localStorage.getItem("userData")).role_id,
+
+    }
+  },
+  computed: {
+    routes() {
+      return this.roleId === 1 ? [
+            '/admin-dashboard/survey-report/subject-grade/by-study-program',
+            '/admin-dashboard/survey-report/subject-grade/by-study-program-and-year',
+            '/admin-dashboard/survey-report/subject-grade/by-subject',
+            '/admin-dashboard/survey-report/subject-grade/by-teacher',
+          ] :
+          [
+            '/teacher-dashboard/survey-report/subject-grade/by-study-program',
+            '/teacher-dashboard/survey-report/subject-grade/by-study-program-and-year',
+            '/teacher-dashboard/survey-report/subject-grade/by-subject',
+            '/teacher-dashboard/survey-report/subject-grade/by-teacher',
+          ]
     }
   }
 };

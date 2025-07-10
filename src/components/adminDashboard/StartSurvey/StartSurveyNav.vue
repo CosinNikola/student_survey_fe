@@ -1,6 +1,16 @@
 <script>
 export default {
-  name: "StartSurveyNav"
+  name: "StartSurveyNav",
+  data() {
+    return {
+      roleId: JSON.parse(localStorage.getItem("userData")).role_id,
+    }
+  },
+  computed: {
+    urlPrefix() {
+      return this.roleId === 1 ? 'admin-dashboard' : 'teacher-dashboard';
+    }
+  }
 };
 </script>
 
@@ -8,15 +18,15 @@ export default {
   <div class="search-nav">
     <ul class="search-nav__list">
       <li class="search-nav__item">
-        <router-link class="search-nav__link" to="/admin-dashboard/start-survey/general">
+        <router-link class="search-nav__link" :to="`/${this.urlPrefix}/start-survey/general`">
           Opšta anketa
         </router-link>
       </li> <li class="search-nav__item">
-      <router-link class="search-nav__link" to="/admin-dashboard/start-survey/subject">
+      <router-link class="search-nav__link" :to="`/${this.urlPrefix}/start-survey/subject`">
         Anketa po predmetu
       </router-link>
     </li><li class="search-nav__item">
-      <router-link class="search-nav__link" to="/admin-dashboard/start-survey/tokens-table">
+      <router-link class="search-nav__link" :to="`/${this.urlPrefix}/start-survey/tokens-table`">
         Tabela sa tokenima
       </router-link>
     </li>

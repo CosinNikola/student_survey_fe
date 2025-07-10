@@ -170,6 +170,7 @@ const routes = [
     path: "/admin-dashboard",
     name: "admin-dashboard",
     component: AdminDashboardView,
+    meta: { requiresAuth: true, role_id: 1 },
     children: [
       {
         path: 'survey-report',
@@ -427,6 +428,195 @@ const routes = [
     path: "/teacher-dashboard",
     name: "teacher-dashboard",
     component: TeacherDashboardView,
+    meta: { requiresAuth: true, role_id: 2 },
+    children: [
+      {
+      path: 'survey-report',
+    component: SurveyReport,
+    children: [
+  {
+    path: "general-data",
+    component: GeneralDataReport
+  },
+  {
+    path: "study-program-eval",
+    component: StudyProgramEvalReport,
+    children: [
+      {
+        path: "by-study-program",
+        component: StudyProgramEvalBySP
+      }, {
+        path: "by-study-program-and-year",
+        component: StudyProgramEvalBySPYear
+      },
+    ]
+  },
+  {
+    path: "work-plan-realization",
+    component: WorkPlanRealizationReport,
+    children: [
+      {
+        path: "by-study-program",
+        component: WorkPlanRealizationBySP
+      }, {
+        path: "by-study-program-and-year",
+        component: WorkPlanRealizationBySPYear
+      },
+    ]
+  },
+  {
+    path: "subject-grade",
+    component: SubjectGradeReport,
+    children: [
+      {
+        path: "by-study-program",
+        component: SubjectGradeBySP
+      }, {
+        path: "by-study-program-and-year",
+        component: SubjectGradeBySPYear
+      },{
+        path: "by-subject",
+        component: SubjectGradeBySubject
+      },{
+        path: "by-teacher",
+        component: SubjectGradeByTeacher
+      },
+    ]
+  },
+  {
+    path: "teacher-grade",
+    component: TeacherGradeReport,
+    children: [
+      {
+        path: "quality",
+        component: TeacherQualityReport,
+        children: [
+          {
+            path: "by-study-program",
+            component: TeacherQualityBySP
+          },
+          {
+            path: "by-study-program-and-year",
+            component: TeacherQualityBySPYear
+          },{
+            path: "by-subject",
+            component: TeacherQualityBySubject
+          },{
+            path: "by-teacher",
+            component: TeacherQualityByTeacher
+          },
+        ]
+      },
+      {
+        path: "assessment",
+        component: TeacherAssessmentReport,
+        children: [
+          {
+            path: "by-study-program",
+            component: TeacherAssessmentBySP
+          },
+          {
+            path: "by-study-program-and-year",
+            component: TeacherAssessmentBySPYear
+          },{
+            path: "by-subject",
+            component: TeacherAssessmentBySubject
+          },{
+            path: "by-teacher",
+            component: TeacherAssessmentByTeacher
+          },
+        ]
+      },
+    ]
+  },
+  {
+    path: "associate-grade",
+    component: AssociateGradeReport,
+    children: [
+      {
+        path: "quality",
+        component: AssociateQualityReport,
+        children: [
+          {
+            path: "by-study-program",
+            component: AssociateQualityBySP
+          },
+          {
+            path: "by-study-program-and-year",
+            component: AssociateQualityBySPYear
+          },{
+            path: "by-subject",
+            component: AssociateQualityBySubject
+          },{
+            path: "by-associate",
+            component: AssociateQualityByAssociate
+          },
+        ]
+      },
+      {
+        path: "assessment",
+        component: AssociateAssessmentReport,
+        children: [
+          {
+            path: "by-study-program",
+            component: AssociateAssessmentBySP
+          },
+          {
+            path: "by-study-program-and-year",
+            component: AssociateAssessmentBySPYear
+          },{
+            path: "by-subject",
+            component: AssociateAssessmentBySubject
+          },{
+            path: "by-associate",
+            component: AssociateAssessmentByAssociate
+          },
+        ]
+      },
+    ]
+  },{
+    path: "textbooks-quality",
+    component: TextbooksQualityReport,
+    children: [
+      {
+        path: "by-study-program",
+        component: TextbooksQualityBySP
+      },
+      {
+        path: "by-study-program-and-year",
+        component: TextbooksQualityBySPYear
+      },
+      {
+        path: "by-subject",
+        component: TextbooksQualityBySubject
+      },
+      {
+        path: "by-teacher",
+        component: TextbooksQualityByTeacher
+      },
+    ]
+  },
+
+]
+},
+{
+  path: "start-survey",
+      component: StartSurvey,
+    children: [
+  {
+    path: "general",
+    component: GeneralSurveyStart
+  },
+  {
+    path: "subject",
+    component: SubjectSurveyStart
+  },{
+    path: "tokens-table",
+    component: TokensTable
+  },
+]
+},
+    ]
   },
 ];
 
@@ -434,6 +624,19 @@ const router = createRouter({
   history: createWebHashHistory(),
   routes,
 });
+
+router.beforeEach((to, from, next) => {
+  const token = localStorage.getItem('token') // ili iz Vuex/Pinia
+  const user = JSON.parse(localStorage.getItem("userData"));
+
+  if (to.meta.requiresAuth && !token) {
+    next('/login')
+  }else if (to.meta.role_id && user?.role_id !== to.meta.role_id) {
+    next('/login') // ili redirect gde želiš
+  } else {
+    next()
+  }
+})
 
 // {
 //   path: "study-program",

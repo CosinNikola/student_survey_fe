@@ -21,12 +21,41 @@
       <li class="nav-item">
         <router-link class="nav-link" to="/admin-dashboard/associates" active-class="nav-link-active">Saradnici</router-link>
       </li>
+      <li class="nav-item">
+        <a class="nav-link" @click="logout()">ODJAVA</a>
+      </li>
     </ul>
   </div>
 </template>
 <script>
 export default {
-  name: "AdminDashboardNav"
+  name: "AdminDashboardNav",
+  data() {
+    return {
+      token: localStorage.getItem('token')
+    }
+  },
+  methods: {
+    logout() {
+      fetch("http://127.0.0.1:8000/api/logout", {
+        method: "POST",
+        body: JSON.stringify(this.formData),
+        headers: {
+          "Content-Type": "application/json",
+          "mode": "no-cors",
+          "Access-Control-Allow-Origin": "*",
+          "Authorization": `Bearer ${this.token}`
+        }
+      })
+          .then(res => {
+            if(res.status === 200) {
+              localStorage.removeItem('token');
+              localStorage.removeItem('userData');
+              this.$router.push('/login');
+            }
+          })
+    }
+  }
 };
 </script>
 
