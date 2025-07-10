@@ -23,7 +23,7 @@
       this.createFormVisible = !this.createFormVisible;
     }">Kreiraj novi</DashboardButton>
   <StudyProgramByYearCreate v-if="createFormVisible" :data = "studyProgramsByYearData"/>
-    <StudyProgramByYearEdit v-if="editFormVisible" />
+    <StudyProgramByYearEdit v-if="editFormVisible" :data = "studyProgramsByYearData" :id="this.studyProgramByYearId" :spId="this.studyProgramId" :name="this.studyProgramByYearName" :year="this.yearOfStudy" :no_of_students="this.noOfStudents"/>
   </div>
 </template>
 
@@ -39,7 +39,12 @@ export default {
     return {
       studyProgramsByYearData: [],
       createFormVisible: false,
-      editFormVisible: false
+      editFormVisible: false,
+      studyProgramId: "",
+      studyProgramByYearId: "",
+      studyProgramByYearName: "",
+      yearOfStudy: "",
+      noOfStudents: ""
     }
   },
   mounted() {
@@ -54,6 +59,7 @@ export default {
         .then(res => res.json())
         .then(data => {
           this.studyProgramsByYearData = data;
+          console.log(data);
         })
   },
   methods: {
@@ -74,8 +80,13 @@ export default {
       }
     },
     editButtonClick(studyProgram) {
-      console.log(studyProgram);
+      console.log("sp: ",studyProgram);
       this.editFormVisible = !this.editFormVisible;
+      this.studyProgramId = studyProgram.study_program_id;
+      this.studyProgramByYearId = studyProgram.id;
+      this.studyProgramByYearName = studyProgram.name;
+      this.yearOfStudy = studyProgram.year_of_study;
+      this.noOfStudents = studyProgram.no_of_students;
     }
   }
 }

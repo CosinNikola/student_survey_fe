@@ -13,7 +13,7 @@
         <td>{{subject.subject_name }}</td>
         <td> {{ subject.study_program_name }}</td>
         <td> {{ subject.year_of_study }}</td>
-        <td><DashboardButton type="edit">Izmeni predmet po godini</DashboardButton></td>
+        <td><DashboardButton type="edit" @click="editButtonClick(subject)">Izmeni predmet po godini</DashboardButton></td>
         <td><DashboardButton type="error" v-if="!subject.isFk" @click="deleteSubjectStudyProgram(subject.id)">Obriši predmet po godini</DashboardButton></td>
       </tr>
     </table>
@@ -21,20 +21,28 @@
       this.createFormVisible = !this.createFormVisible;
     }">Kreiraj novi</DashboardButton>
     <SubjectsByYearCreate v-if="this.createFormVisible"/>
+    <SubjectsByYearEdit v-if="this.editFormVisible" :subjectId="this.subjectId" :id="this.id" :subjectStudyProgramByYearId="this.subjectStudyProgramByYearId"/>
   </div>
 </template>
 
 <script>
 import DashboardButton from "@/components/adminDashboard/DashboardButton.vue";
 import SubjectsByYearCreate from "@/components/adminDashboard/SubjectsManagement/SubjectsByYearCreate.vue";
+import SubjectsByYearEdit from "@/components/adminDashboard/SubjectsManagement/SubjectsByYearEdit.vue";
 
 export default {
   name: "SubjectsByYear",
-  components: {DashboardButton, SubjectsByYearCreate},
+  components: {DashboardButton, SubjectsByYearCreate, SubjectsByYearEdit},
   data() {
     return {
       subjectsStudyProgramData: [],
-      createFormVisible: false
+      createFormVisible: false,
+      editFormVisible: false,
+      id: "",
+      subjectId: "",
+      subjectName: "",
+      subjectYearOfStudy: "",
+      subjectStudyProgramByYearId: "",
     }
   },
   mounted() {
@@ -67,6 +75,13 @@ export default {
               window.location.reload();
             })
       }
+    },
+    editButtonClick(subjectByYear) {
+      this.editFormVisible = !this.editFormVisible;
+      console.log(subjectByYear);
+      this.id = subjectByYear.id;
+      this.subjectId = subjectByYear.subject_id;
+      this.subjectStudyProgramByYearId = subjectByYear.study_program_by_year_id;
     }
   }
 }

@@ -1,16 +1,16 @@
 <template>
   <div class="form-page">
-    <h1>Izmeni studijski program po godini studija</h1>
+    <h1>Izmeni studijski program</h1>
     <form>
       <div class="form-group">
         <label class="form-label">Studijski program</label>
-        <select name="" id="" v-model="studyProgramId">
+        <select name="" id="" v-model="studyProgramId" disabled>
           <option v-for="studyProgramByYear in this.studyProgramsData" :value="studyProgramByYear.id" :key="studyProgramByYear.id">{{studyProgramByYear.name}}</option>
         </select>
       </div>
       <div class="form-group">
         <label class="form-label">Godina studija </label>
-        <select name="" id="" v-model="yearOfStudy">
+        <select name="" id="" v-model="yearOfStudy" disabled>
           <option value="1">1</option>
           <option value="2">2</option>
           <option value="3">3</option>
@@ -31,20 +31,33 @@ import DashboardButton from "@/components/adminDashboard/DashboardButton.vue";
 export default {
   name: "StudyProgramByYearEdit",
   components: {DashboardButton},
-  props: ['data'],
+  props: ['data', 'id', 'name', 'year', 'no_of_students', "spId"],
   data() {
     return {
       errorMessage: "",
       errorMessageToggle: false,
-      studyProgramId: "",
-      yearOfStudy: "",
-      noOfStudents: "",
-      studyProgramsData: []
+      studyProgramByYearId: this.id,
+      studyProgramId: this.spId,
+      studyProgramName: this.name,
+      yearOfStudy: this.year,
+      noOfStudents: this.no_of_students,
+      studyProgramsData: [],
+      yearsOfStudy: [1,2,3],
+      propData: {
+        "id": this.id,
+        "name": this.name,
+        "year": this.year,
+        "no_of_students": this.no_of_students,
+        "study_program_id": this.spId
+      }
     }
   },
   mounted() {
     this.studyProgramsData = JSON.parse(localStorage.getItem("studyProgramsData"));
     console.log(this.studyProgramsData);
+    // console.log(this.data);
+    // console.log("props:", this.propData);
+    // console.log(this.studyProgramName);
   },
   methods: {
     formSubmit(e) {
@@ -58,8 +71,8 @@ export default {
           no_of_students: Number(this.noOfStudents)
         };
         console.log(this.formData);
-        fetch("http://127.0.0.1:8000/api/study-programs-by-year", {
-          method: "POST",
+        fetch("http://127.0.0.1:8000/api/study-programs-by-year/" + this.studyProgramByYearId, {
+          method: "PUT",
           body: JSON.stringify(this.formData),
           headers: {
             "Content-Type": "application/json",
@@ -76,12 +89,44 @@ export default {
               }
             })
       }
-    }
+    },
   }
 }
 </script>
 
 
 <style scoped>
+.form-label {
+  font-weight: bold;
+  font-size: 14px;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+.form-input, select {
+  border: 0;
+  border-bottom: 1px solid gray;
+  font-size: 15px;
+  padding: 5px;
+  width: 100%;
+}
+.form-group {
+  margin-bottom: 15px;
+}
 
+.form-page {
+  border: 1px solid lightgray;
+  border-radius: 15px;
+  padding: 20px;
+  margin-top: 10px;
+  box-shadow: 2px 2px 2px gray;
+  width: 500px;
+}
+
+.form-page h1 {
+  margin-top: 0;
+}
+.errorMsgDisplay {
+  font-weight: bold;
+  color: red;
+}
 </style>
