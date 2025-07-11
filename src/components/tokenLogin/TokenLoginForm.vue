@@ -7,6 +7,7 @@
             <input type="text" id="token" placeholder="Unesite vaš token..." v-model="token"/>
           </div>
           <button class="button" @click="login">Prijavite se</button>
+          <p v-if="errorMessageToggle" class="errorMsgDisplay">{{ errorMessage }}</p>
         </form>
     </div>
 </template>
@@ -22,42 +23,60 @@ export default {
         token: "",
         formData: {
           token: "",
-        }
+        },
+        errorMessageToggle: false,
+        errorMessage: ""
       }
   },
   methods: {
       login(e) {
+        if (!this.token) {
+          this.errorMessage = "Morate uneti token!";
+          this.errorMessageToggle = true;
+          return;
+        }
         this.formData = {
           token: this.token
         };
         e.preventDefault();
-        // fetch("http://127.0.0.1:8000/api/token-login", {
-        //   method: "PUT",
-        //   body: JSON.stringify(this.formData),
-        //   headers: {
-        //     "Content-Type": "application/json",
-        //     "mode": "no-cors",
-        //     "Access-Control-Allow-Origin": "*",
-        //   }
-        // })
-        //   .then(res => {
-        //     if(res.status === 200){
-        //       this.$router.push("/general-data");
-        //     }
-        //     else if (res.status === 404 && this.formData.token === "") {
-        //       alert("Morate uneti token!");
-        //     }
-        //     else if (res.status === 404) {
-        //       alert("Nazalost, Vas token je istekao!");
-        //     }
-        //   })
+        fetch("http://127.0.0.1:8000/api/token-login", {
+          method: "POST",
+          body: JSON.stringify(this.formData),
+          headers: {
+            "Content-Type": "application/json",
+            "mode": "no-cors",
+            "Access-Control-Allow-Origin": "*",
+          }
+        })
+          .then(res => {
+            if (res.status === 200) {
+              this.errorMessageToggle = false;
+              if(this.survey === "general") {
+                this.$router.push('/general-data');
+              } else if(this.survey === "subject") {
+                this.$router.push('/subject-grade');
+              } else {
+                this.$router.push('/');
+              }
+            } else if (res.status === 404) {
+              this.errorMessageToggle = true;
+              this.errorMessage = "Nazalost, Vas token je istekao!";
+            } else {
+              this.errorMessageToggle = true;
+              this.errorMessage = "Došlo je do greške.";
+            }
+          }) .catch(err => {
+          console.error(err);
+          this.errorMessageToggle = true;
+          this.errorMessage = "Greška pri konekciji sa serverom.";
+        });
 
-        if(this.survey === "general") {
-          this.$router.push('/general-data');
-        }
-        else if(this.survey === "subject") {
-          this.$router.push('/subject-grade');
-        }
+        // if(this.survey === "general") {
+        //   this.$router.push('/general-data');
+        // }
+        // else if(this.survey === "subject") {
+        //   this.$router.push('/subject-grade');
+        // }
       }
   }
 }
@@ -144,5 +163,9 @@ export default {
   .button:hover {
     cursor: pointer;
     background-color: gray;
+  }
+  .errorMsgDisplay {
+    font-weight: bold;
+    color: red;
   }
 </style>
