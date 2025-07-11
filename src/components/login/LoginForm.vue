@@ -11,6 +11,7 @@
           <label class="form-label">Lozinka</label>
           <input type="password" class="form-input" id="password" placeholder="Unesite vašu lozinku..." v-model="password"/>
         </div>
+        <p v-if="errorMessageToggle" class="errorMsgDisplay">{{ errorMessage }}</p>
         <button @click="login">Prijavi se</button>
       </form>
     </div>
@@ -24,7 +25,9 @@ export default {
     return {
       email: "",
       password: "",
-      formData: {}
+      formData: {},
+      errorMessage: "",
+      errorMessageToggle: false
     }
   },
   methods: {
@@ -32,7 +35,8 @@ export default {
       e.preventDefault();
 
       if(!this.email && !this.password) {
-        alert("Morate uneti mejl adresu i lozinku!");
+        this.errorMessage = "Sva polja moraju biti popunjena!";
+        this.errorMessageToggle = true;
       }
       else {
       this.formData = {
@@ -41,17 +45,29 @@ export default {
       }
       console.log(this.formData);
 
+
       fetch("http://127.0.0.1:8000/api/login", {
         method: "POST",
         body: JSON.stringify(this.formData),
         headers: {
           "Content-Type": "application/json",
-          "mode": "no-cors",
           "Access-Control-Allow-Origin": "*",
         }
       })
-        .then(res => res.json())
+          .then(res => {
+            if (!res.ok) {
+              if (res.status === 401) {
+                this.errorMessage = "Uneti podaci nisu ispravni!";
+              } else {
+                this.errorMessage = `Greška: ${res.status}`;
+              }
+              this.errorMessageToggle = true;
+              return Promise.reject(this.errorMessage);
+            }
+            return res.json();
+          })
         .then(data => {
+          console.log(data);
           localStorage.setItem("token", data.access_token);
           localStorage.setItem("userData", JSON.stringify(data.user));
 
@@ -62,7 +78,16 @@ export default {
             this.$router.push("/teacher-dashboard");
           }
           }
-        )
+        ).catch(err => {
+          console.error("Login greška:", err);
+          if (typeof err === "string") {
+            // Već smo postavili errorMessage gore
+            this.errorMessageToggle = true;
+          } else {
+            this.errorMessage = "Došlo je do greške pri logovanju.";
+            this.errorMessageToggle = true;
+          }
+        });
       }
           // if(res.status === 200){
           //   // this.$router.push("/general-data");
@@ -146,5 +171,9 @@ form button:hover {
   justify-content: space-evenly;
   align-items: flex-start;
   width: 100%;
+}
+.errorMsgDisplay {
+  font-weight: bold;
+  color: red;
 }
 </style>

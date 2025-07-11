@@ -7,6 +7,9 @@
       <router-link class="nav-link" to="/teacher-dashboard/start-survey" active-class="nav-link-active">Nova anketa</router-link>
       </li>
       <li class="nav-item">
+        <router-link class="nav-link" to="/teacher-dashboard/change-password" active-class="nav-link-active">Promena lozinke</router-link>
+      </li>
+      <li class="nav-item">
         <a class="nav-link" @click="logout()">ODJAVA</a>
       </li>
     </ul>

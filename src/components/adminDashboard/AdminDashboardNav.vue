@@ -20,6 +20,8 @@
       </li>
       <li class="nav-item">
         <router-link class="nav-link" to="/admin-dashboard/associates" active-class="nav-link-active">Saradnici</router-link>
+      </li><li class="nav-item">
+        <router-link class="nav-link" to="/admin-dashboard/change-password" active-class="nav-link-active">Promena lozinke</router-link>
       </li>
       <li class="nav-item">
         <a class="nav-link" @click="logout()">ODJAVA</a>

@@ -90,6 +90,7 @@ import TeacherBySubject from "@/components/adminDashboard/TeachersManagement/Tea
 import AssociatesManagement from "@/components/adminDashboard/AssociatesManagement/AssociatesManagement.vue";
 import AllAssociates from "@/components/adminDashboard/AssociatesManagement/AllAssociates.vue";
 import AssociateBySubject from "@/components/adminDashboard/AssociatesManagement/AssociateBySubject.vue";
+import ChangePasswordForm from "@/components/adminDashboard/ChangePasswordForm.vue";
 
 
 const routes = [
@@ -172,6 +173,10 @@ const routes = [
     component: AdminDashboardView,
     meta: { requiresAuth: true, role_id: 1 },
     children: [
+      {
+        path: 'change-password',
+        component: ChangePasswordForm
+      },
       {
         path: 'survey-report',
         component: SurveyReport,
@@ -430,6 +435,10 @@ const routes = [
     component: TeacherDashboardView,
     meta: { requiresAuth: true, role_id: 2 },
     children: [
+      {
+        path: 'change-password',
+        component: ChangePasswordForm
+      },
       {
       path: 'survey-report',
     component: SurveyReport,
