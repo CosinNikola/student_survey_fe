@@ -3,7 +3,7 @@
     <hr>
     <SurveyReportSelectMenu labelText="Odaberite studijski program" :data="studyProgramsData" @sendData="handleStudyProgram"/>
     <SurveyReportYearOfStudy @sendData="handleYearOfStudy"/>
-    <SurveyReportSubmitButton @click="submitData"/>
+    <SurveyReportSubmitButton @click="submitData">Prikaži</SurveyReportSubmitButton>
     <div v-if="showData === 1">
     <SurveyReportDataDisplay v-for="(studyProgramEval,i) in studyProgramEvalData" :data="studyProgramEval" :dataLabels="dataLabels" :key="i" />
     </div>

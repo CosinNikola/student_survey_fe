@@ -20,6 +20,8 @@
     <SurveyReportSelectMenu labelText="Odaberite predmet" :data="subjectsData" @sendData="handleSentData"/>
     <div v-if="errorMsg" class="msg-error">
       <p>{{errorMsg}}</p>
+    </div><div v-if="surveyMsg" class="msg-success">
+      <p>{{surveyMsg}}</p>
     </div>
     <SurveyReportSubmitButton @click="submit">Pokreni</SurveyReportSubmitButton>
   </div>
@@ -42,8 +44,11 @@ export default {
       uploadSuccess: false,
       studentsCount: 0,
       errorMsg: "",
+      surveyMsg: "",
+      surveyStartSuccess: false,
       tokenMessage: "",
-      tokensGenerateSuccess: false
+      tokensGenerateSuccess: false,
+      token: localStorage.getItem("token"),
     }
   },
   methods: {
@@ -57,28 +62,26 @@ export default {
       this.subjectId = data;
     },
     uploadEmails(e) {
-      e.preventDefault();  // Prevent the form from submitting normally
+      e.preventDefault();
 
       let fileInput = document.getElementById('excel-file');
-      let file = fileInput.files[0];  // Get the file
+      let file = fileInput.files[0];
 
       if (!file) {
         document.getElementById('message').innerText = 'Please select a file.';
         return;
       }
 
-      // Create FormData to send file
       let formData = new FormData();
       formData.append('excel_file', file);
-      // this.uploadSuccess = true;
 
 
-      // Send the file via Fetch API (AJAX)
       fetch("http://127.0.0.1:8000/api/import", {
         method: 'POST',
         body: formData,
         headers: {
-          'X-CSRF-TOKEN': '{{ csrf_token() }}',  // Include CSRF token for Laravel security
+          'X-CSRF-TOKEN': '{{ csrf_token() }}',
+          "Authorization": `Bearer ${this.token}`
         }
       })
           .then(response => response.json())
@@ -97,8 +100,6 @@ export default {
           })
           .catch(error => {
             console.log(error);
-            // document.getElementById('message').innerHTML = "<p>Greška pri slanju adresa!</p>";
-            // document.getElementById('message').className = "msg-error";
           });
     },
     tokensGenerate(e) {
@@ -110,6 +111,7 @@ export default {
           "Content-Type": "application/json",
           "mode": "no-cors",
           "Access-Control-Allow-Origin": "*",
+          "Authorization": `Bearer ${this.token}`
         }
       })
           .then(res => {
@@ -128,11 +130,16 @@ export default {
           "Content-Type": "application/json",
           "mode": "no-cors",
           "Access-Control-Allow-Origin": "*",
+          "Authorization": `Bearer ${this.token}`
         }
       })
           .then(res => {
                 if(res.status !== 200) {
                   this.errorMsg = "Greska pri pokretanju ankete!";
+                }
+                else {
+                  this.surveyMsg = "Anketa uspešno pokrenuta!";
+                  this.surveyStartSuccess = true;
                 }
               }
           )

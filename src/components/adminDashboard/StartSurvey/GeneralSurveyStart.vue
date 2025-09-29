@@ -39,7 +39,8 @@ export default {
       yearOfStudy: "",
       uploadSuccess: false,
       studentsCount: 0,
-      errorMsg: ""
+      errorMsg: "",
+      token: localStorage.getItem("token"),
     }
   },
   computed: {
@@ -73,7 +74,8 @@ export default {
           method: 'POST',
           body: formData,
           headers: {
-            'X-CSRF-TOKEN': '{{ csrf_token() }}',  // Include CSRF token for Laravel security
+            'X-CSRF-TOKEN': '{{ csrf_token() }}',
+            "Authorization": `Bearer ${this.token}`
           }
         })
             .then(response => response.json())
@@ -105,6 +107,7 @@ export default {
           "Content-Type": "application/json",
           "mode": "no-cors",
           "Access-Control-Allow-Origin": "*",
+          "Authorization": `Bearer ${this.token}`
         }
       })
           .then(res => res.json())
@@ -118,6 +121,7 @@ export default {
           "Content-Type": "application/json",
           "mode": "no-cors",
           "Access-Control-Allow-Origin": "*",
+          "Authorization": `Bearer ${this.token}`
         }
       })
           .then(res => {

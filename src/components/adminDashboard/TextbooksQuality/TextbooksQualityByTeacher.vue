@@ -2,7 +2,7 @@
   <hr>
   <div class="search-container-tight">
     <SurveyReportSelectMenu labelText="Odaberite profesora" :data="teachersData" @sendData="handleTeacher"/>
-    <SurveyReportSubmitButton @click="submitData"/>
+    <SurveyReportSubmitButton @click="submitData">Pretraži</SurveyReportSubmitButton>
   </div>
   <div v-if="showData === 1">
     <SurveyReportDataDisplay v-for="(textbooksQuality,i) in textbooksQualityData" :data="textbooksQuality" :dataLabels="dataLabels" :key="i" />

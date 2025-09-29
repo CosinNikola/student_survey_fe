@@ -1,6 +1,5 @@
 <template>
   <div class="form-group">
-<!--    {{id}}-->
     <label for="" class="form-group__label">{{labelText}}</label>
     <SurveySelectMenu @selectedData="handleSelectedData" :options="options" :name="name" :id="id" :prevData="prevData"></SurveySelectMenu>
   </div>

@@ -28,7 +28,6 @@ export default {
   },
   methods: {
     handleSelectedValue(key) {
-      // console.log(this.selectValue);
       if(key === "gender") {
         this.$store.commit('setGeneralDataGender', this.selectMenuValue);
       }
@@ -45,17 +44,12 @@ export default {
     }
   },
   mounted() {
-    // console.log(this.prevData);
-    // console.log(this.prevData[this.name])
     if(this.prevData) {
       this.selectMenuValue = this.prevData[this.name];
     }
     else {
       this.selectMenuValue = "";
     }
-    // this.selectMenuValue = this.prevData[this.name];
-    // console.log(this.prevData);
-    // console.log(this.selectMenuValue);
   }
 };
 </script>

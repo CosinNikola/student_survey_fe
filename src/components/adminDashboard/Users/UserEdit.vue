@@ -1,6 +1,6 @@
 <template>
   <div class="form-page">
-    <h1>Kreiraj novog korisnika</h1>
+    <h1>Izmeni podatke o korisniku</h1>
     <form>
       <div class="form-group">
         <label class="form-label">Ime</label>
@@ -32,7 +32,11 @@ export default {
   props: ['id','name', 'email', 'roleId'],
   data() {
     return {
-      formData: {},
+      formData: {
+        name: "",
+        email: "",
+        role_id: ""
+      },
       userId: this.id,
       userName: this.name,
       userEmail: this.email,
@@ -49,12 +53,12 @@ export default {
         email: this.userEmail,
         role_id: this.userRoleId
       };
+      console.log(this.formData, this.userId);
       fetch("http://127.0.0.1:8000/api/users/" + this.userId, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
-          "mode": "no-cors",
-          "Access-Control-Allow-Origin": "*"
+          "Authorization": `Bearer ${this.token}`
         },
         body: JSON.stringify(this.formData)
       })

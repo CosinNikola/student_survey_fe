@@ -28,7 +28,8 @@ export default {
         password_confirmation: "",
       },
       errorMessageToggle: false,
-      errorMessage: ""
+      errorMessage: "",
+      token: localStorage.getItem("token"),
     }
   },
   methods: {
@@ -47,7 +48,8 @@ export default {
         headers: {
           "Content-Type": "application/json",
           "mode": "no-cors",
-          "Access-Control-Allow-Origin": "*"
+          "Access-Control-Allow-Origin": "*",
+          "Authorization": `Bearer ${this.token}`
         },
         body: JSON.stringify(this.formData)
       })

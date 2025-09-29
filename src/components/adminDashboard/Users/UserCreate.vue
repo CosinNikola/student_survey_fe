@@ -11,10 +11,10 @@
         <input type="text" class="form-input" v-model="this.formData.email">
       </div><div class="form-group">
         <label class="form-label">Lozinka</label>
-        <input type="text" class="form-input" v-model="this.formData.password">
+        <input type="password" class="form-input" v-model="this.formData.password">
       </div><div class="form-group">
         <label class="form-label">Potvrda lozinke</label>
-        <input type="text" class="form-input" v-model="this.formData.password_confirmation">
+        <input type="password" class="form-input" v-model="this.formData.password_confirmation">
       </div>
       <div class="form-group">
         <label class="form-label">Uloga</label>
@@ -42,9 +42,10 @@ export default {
         password: "",
         password_confirmation: "",
         role_id: "",
+      },
         errorMessage: "",
-        errorMessageToggle: ""
-      }
+        errorMessageToggle: "",
+        token: localStorage.getItem("token"),
     }
   },
   methods: {
@@ -60,8 +61,7 @@ export default {
           body: JSON.stringify(this.formData),
           headers: {
             "Content-Type": "application/json",
-            "mode": "no-cors",
-            "Access-Control-Allow-Origin": "*",
+            "Authorization": `Bearer ${this.token}`
           }
         })
             .then(res => {

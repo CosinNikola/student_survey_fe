@@ -55,7 +55,7 @@ export default {
         this.formData.subject_study_program_id
       ) {
         localStorage.setItem(this.formDataLabel, JSON.stringify(this.formData));
-        this.$router.push("/teacher-grade/" + localStorage.getItem('teachersCount'));
+        this.$router.push("/teacher-grade/");
       }
       else {
         alert('Morate popuniti sva polja!');
